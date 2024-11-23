@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  allo-algo-web-app-contracts-validate:
+    name: Run allo-algo-web-app-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/allo-algo-web-app-contracts-ci.yaml
+
+  allo-algo-web-app-contracts-release:
+    name: Run allo-algo-web-app-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/allo-algo-web-app-contracts-cd.yaml
+    needs: allo-algo-web-app-contracts-validate
+
+  allo-algo-web-app-frontend-validate:
+    name: Run allo-algo-web-app-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/allo-algo-web-app-frontend-ci.yaml
+
+  allo-algo-web-app-frontend-release:
+    name: Run allo-algo-web-app-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/allo-algo-web-app-frontend-cd.yaml
+    needs: allo-algo-web-app-frontend-validate

@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 2.0.12
+_src_path: gh:algorandfoundation/algokit-fullstack-template
+author_email: dipanshuhappy@gmail.com
+author_name: dipanshuhappy
+cloud_provider: vercel
+contract_name: allo
+deployment_language: typescript
+preset_name: production
+project_name: allo-algo-web-app
+

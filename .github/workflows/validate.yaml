@@ -1,0 +1,14 @@
+name: Pull Request validation
+
+on: [pull_request]
+
+
+jobs:
+  allo-algo-web-app-contracts-ci:
+    name: Run allo-algo-web-app-contracts validation
+    uses: ./.github/workflows/allo-algo-web-app-contracts-ci.yaml
+
+  allo-algo-web-app-frontend-ci:
+    name: Run allo-algo-web-app-frontend validation
+    uses: ./.github/workflows/allo-algo-web-app-frontend-ci.yaml
+
