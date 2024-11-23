@@ -1,8 +1,8 @@
 #pragma version 10
 
 smart_contracts.registry.contract.Registry.approval_program:
-    intcblock 1 0 78 32
-    bytecblock "profilesById" 0x151f7c75 "anchorToProfileId"
+    intcblock 1 0 54 32
+    bytecblock "profilesById" 0x151f7c75 "nonce" "anchorToProfileId"
     txn ApplicationID
     bnz main_after_if_else@2
     callsub __init__
@@ -24,14 +24,45 @@ __init__:
 __puya_arc4_router__:
     proto 0 1
     txn NumAppArgs
-    bz __puya_arc4_router___bare_routing@11
-    pushbytess 0x1e6252af 0xb93cabbc 0xdc241a4b 0x4f74e9f7 0xddb61658 0x41fcc955 0xab552ca5 // method "getProfileById(byte[])(byte[],uint256,string,string,address,uint64,address[])", method "getProfileByAnchor(uint64)(byte[],uint256,string,string,address,uint64,address[])", method "createProfile(uint256,string,string)byte[]", method "addMember(byte[],address)void", method "updateProfileName(byte[],string)void", method "updateProfileMetadata(byte[],string)void", method "isOwnerOrMemberOfProfile(byte[],address)bool"
+    bz __puya_arc4_router___bare_routing@15
+    pushbytess 0x586e076e 0x3fbb5f60 0x4171c371 0x76e4e7a8 0xaa8d1fa2 0xd7941b2c 0x83ec693f 0x4f74e9f7 0xddb61658 0x41fcc955 0xab552ca5 // method "getAccountNonce(account)uint64", method "incrementAccountNonce(account)void", method "getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])", method "getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])", method "getProfileId(uint256,string,string)byte[]", method "addAnchorToProfileId(uint64,byte[])void", method "createProfile(byte[],string,string)uint64", method "addMember(byte[],address)void", method "updateProfileName(byte[],string)void", method "updateProfileMetadata(byte[],string)void", method "isOwnerOrMemberOfProfile(byte[],address)bool"
     txna ApplicationArgs 0
-    match __puya_arc4_router___getProfileById_route@2 __puya_arc4_router___getProfileByAnchor_route@3 __puya_arc4_router___createProfile_route@4 __puya_arc4_router___addMember_route@5 __puya_arc4_router___updateProfileName_route@6 __puya_arc4_router___updateProfileMetadata_route@7 __puya_arc4_router___isOwnerOrMemberOfProfile_route@8
+    match __puya_arc4_router___getAccountNonce_route@2 __puya_arc4_router___incrementAccountNonce_route@3 __puya_arc4_router___getProfileById_route@4 __puya_arc4_router___getProfileByAnchor_route@5 __puya_arc4_router___getProfileId_route@6 __puya_arc4_router___addAnchorToProfileId_route@7 __puya_arc4_router___createProfile_route@8 __puya_arc4_router___addMember_route@9 __puya_arc4_router___updateProfileName_route@10 __puya_arc4_router___updateProfileMetadata_route@11 __puya_arc4_router___isOwnerOrMemberOfProfile_route@12
     intc_1 // 0
     retsub
 
-__puya_arc4_router___getProfileById_route@2:
+__puya_arc4_router___getAccountNonce_route@2:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    callsub getAccountNonce
+    itob
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___incrementAccountNonce_route@3:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    callsub incrementAccountNonce
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___getProfileById_route@4:
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -47,7 +78,7 @@ __puya_arc4_router___getProfileById_route@2:
     intc_0 // 1
     retsub
 
-__puya_arc4_router___getProfileByAnchor_route@3:
+__puya_arc4_router___getProfileByAnchor_route@5:
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -63,7 +94,7 @@ __puya_arc4_router___getProfileByAnchor_route@3:
     intc_0 // 1
     retsub
 
-__puya_arc4_router___createProfile_route@4:
+__puya_arc4_router___getProfileId_route@6:
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -74,7 +105,7 @@ __puya_arc4_router___createProfile_route@4:
     extract 2 0
     txna ApplicationArgs 3
     extract 2 0
-    callsub createProfile
+    callsub getProfileId
     dup
     len
     itob
@@ -88,7 +119,42 @@ __puya_arc4_router___createProfile_route@4:
     intc_0 // 1
     retsub
 
-__puya_arc4_router___addMember_route@5:
+__puya_arc4_router___addAnchorToProfileId_route@7:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txna ApplicationArgs 2
+    extract 2 0
+    callsub addAnchorToProfileId
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___createProfile_route@8:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    extract 2 0
+    txna ApplicationArgs 2
+    extract 2 0
+    txna ApplicationArgs 3
+    extract 2 0
+    callsub createProfile
+    itob
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___addMember_route@9:
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -101,7 +167,7 @@ __puya_arc4_router___addMember_route@5:
     intc_0 // 1
     retsub
 
-__puya_arc4_router___updateProfileName_route@6:
+__puya_arc4_router___updateProfileName_route@10:
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -114,7 +180,7 @@ __puya_arc4_router___updateProfileName_route@6:
     intc_0 // 1
     retsub
 
-__puya_arc4_router___updateProfileMetadata_route@7:
+__puya_arc4_router___updateProfileMetadata_route@11:
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -127,7 +193,7 @@ __puya_arc4_router___updateProfileMetadata_route@7:
     intc_0 // 1
     retsub
 
-__puya_arc4_router___isOwnerOrMemberOfProfile_route@8:
+__puya_arc4_router___isOwnerOrMemberOfProfile_route@12:
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
@@ -148,17 +214,59 @@ __puya_arc4_router___isOwnerOrMemberOfProfile_route@8:
     intc_0 // 1
     retsub
 
-__puya_arc4_router___bare_routing@11:
+__puya_arc4_router___bare_routing@15:
     txn OnCompletion
-    bnz __puya_arc4_router___after_if_else@15
+    bnz __puya_arc4_router___after_if_else@19
     txn ApplicationID
     !
     assert // can only call when creating
     intc_0 // 1
     retsub
 
-__puya_arc4_router___after_if_else@15:
+__puya_arc4_router___after_if_else@19:
     intc_1 // 0
+    retsub
+
+
+// smart_contracts.registry.contract.Registry.getAccountNonce(account: bytes) -> uint64:
+getAccountNonce:
+    proto 1 1
+    bytec_2 // "nonce"
+    frame_dig -1
+    concat
+    box_get
+    swap
+    btoi
+    swap
+    assert // check self.nonce entry exists
+    retsub
+
+
+// smart_contracts.registry.contract.Registry.incrementAccountNonce(account: bytes) -> void:
+incrementAccountNonce:
+    proto 1 0
+    bytec_2 // "nonce"
+    frame_dig -1
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    cover 2
+    bz incrementAccountNonce_else_body@2
+    frame_dig 0
+    intc_0 // 1
+    +
+    itob
+    box_put
+    b incrementAccountNonce_after_if_else@3
+
+incrementAccountNonce_else_body@2:
+    intc_0 // 1
+    itob
+    box_put
+
+incrementAccountNonce_after_if_else@3:
     retsub
 
 
@@ -178,7 +286,7 @@ getProfileByAnchor:
     proto 1 1
     frame_dig -1
     itob
-    bytec_2 // "anchorToProfileId"
+    bytec_3 // "anchorToProfileId"
     swap
     concat
     box_get
@@ -191,13 +299,47 @@ getProfileByAnchor:
     retsub
 
 
-// smart_contracts.registry.contract.Registry.createProfile(nonce: bytes, name: bytes, metadata: bytes) -> bytes:
-createProfile:
+// smart_contracts.registry.contract.Registry.getProfileId(nonce: bytes, name: bytes, metadata: bytes) -> bytes:
+getProfileId:
     proto 3 1
     frame_dig -3
     txn Sender
     concat
     sha256
+    retsub
+
+
+// smart_contracts.registry.contract.Registry.addAnchorToProfileId(anchor: uint64, profileId: bytes) -> void:
+addAnchorToProfileId:
+    proto 2 0
+    bytec_0 // "profilesById"
+    frame_dig -1
+    concat
+    box_get
+    assert // check self.profilesById entry exists
+    extract 46 8 // on error: Index access is out of bounds
+    frame_dig -2
+    itob
+    swap
+    dig 1
+    b==
+    assert // Profile has a different anchor
+    bytec_3 // "anchorToProfileId"
+    swap
+    concat
+    dup
+    box_del
+    pop
+    frame_dig -1
+    box_put
+    retsub
+
+
+// smart_contracts.registry.contract.Registry.createProfile(id: bytes, name: bytes, metadata: bytes) -> uint64:
+createProfile:
+    proto 3 1
+    txn Sender
+    callsub getAccountNonce
     itxn_begin
     intc_0 // 1
     itxn_field GlobalNumByteSlice
@@ -210,15 +352,18 @@ createProfile:
     pushint 2000 // 2000
     itxn_field Fee
     itxn_submit
-    txn Sender
     itxn CreatedApplicationID
+    swap
     itob
+    txn Sender
     dig 2
-    len
-    pushint 80 // 80
-    +
-    pushbytes 0x0050
+    itob
     frame_dig -3
+    len
+    pushint 56 // 56
+    +
+    pushbytes 0x0038
+    uncover 4
     concat
     dig 1
     itob
@@ -241,13 +386,13 @@ createProfile:
     swap
     uncover 3
     concat
-    dig 2
+    uncover 2
     concat
     swap
     itob
     extract 6 2
     concat
-    dig 2
+    frame_dig -3
     concat
     frame_dig -2
     concat
@@ -256,20 +401,12 @@ createProfile:
     pushbytes base32(AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA)
     concat
     bytec_0 // "profilesById"
-    dig 3
+    frame_dig -3
     concat
     dup
     box_del
     pop
     swap
-    box_put
-    bytec_2 // "anchorToProfileId"
-    swap
-    concat
-    dup
-    box_del
-    pop
-    dig 1
     box_put
     retsub
 
@@ -284,7 +421,7 @@ addMember:
     box_get
     assert // check self.profilesById entry exists
     dup
-    intc_2 // 78
+    intc_2 // 54
     extract_uint16
     dig 1
     len
@@ -328,14 +465,14 @@ updateProfileName:
     box_get
     assert // check self.profilesById entry exists
     dup
-    pushint 34 // 34
+    pushint 10 // 10
     extract_uint16
     dig 1
     intc_1 // 0
     dig 2
     extract3
     dig 2
-    pushint 36 // 36
+    pushint 12 // 12
     extract_uint16
     dig 3
     len
@@ -354,7 +491,7 @@ updateProfileName:
     frame_dig -1
     len
     dig 2
-    pushint 36 // 36
+    pushint 12 // 12
     extract_uint16
     dig 1
     +
@@ -364,9 +501,9 @@ updateProfileName:
     extract 6 2
     uncover 3
     swap
-    replace2 36
+    replace2 12
     dup
-    intc_2 // 78
+    intc_2 // 54
     extract_uint16
     uncover 2
     +
@@ -374,7 +511,7 @@ updateProfileName:
     -
     itob
     extract 6 2
-    replace2 78
+    replace2 54
     dig 1
     box_del
     pop
@@ -390,7 +527,7 @@ _onlyProfileOwner:
     concat
     box_get
     assert // check self.profilesById entry exists
-    extract 38 32 // on error: Index access is out of bounds
+    extract 14 32 // on error: Index access is out of bounds
     txn Sender
     ==
     assert // Only the owner of the profile can call this function
@@ -409,14 +546,14 @@ updateProfileMetadata:
     box_get
     assert // check self.profilesById entry exists
     dup
-    pushint 36 // 36
+    pushint 12 // 12
     extract_uint16
     dig 1
     intc_1 // 0
     dig 2
     extract3
     dig 2
-    intc_2 // 78
+    intc_2 // 54
     extract_uint16
     dig 3
     len
@@ -435,14 +572,14 @@ updateProfileMetadata:
     frame_dig -1
     len
     dig 2
-    intc_2 // 78
+    intc_2 // 54
     extract_uint16
     +
     swap
     -
     itob
     extract 6 2
-    replace2 78
+    replace2 54
     dig 1
     box_del
     pop
@@ -463,7 +600,7 @@ isOwnerOrMemberOfProfile:
     uncover 2
     assert // check self.profilesById entry exists
     dup
-    intc_2 // 78
+    intc_2 // 54
     extract_uint16
     dig 1
     len
@@ -506,7 +643,7 @@ isOwnerOrMemberOfProfile_after_if_else@4:
 isOwnerOrMemberOfProfile_after_for@6:
     frame_dig 0
     frame_dig 1
-    extract 38 32 // on error: Index access is out of bounds
+    extract 14 32 // on error: Index access is out of bounds
     frame_dig -1
     ==
     ||

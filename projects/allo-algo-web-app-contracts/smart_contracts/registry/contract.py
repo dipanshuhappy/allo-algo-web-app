@@ -6,7 +6,7 @@ VERSION = 1
 
 class Profile(arc4.Struct):
     id: arc4.DynamicBytes
-    nonce: arc4.UInt256
+    nonce: arc4.UInt64
     name: arc4.String
     metadata: arc4.String
     owner: arc4.Address
@@ -16,10 +16,24 @@ class Profile(arc4.Struct):
 class Registry(algopy.ARC4Contract):
     def __init__(self) -> None:
         self.version = algopy.BigUInt(VERSION)
+       
         self.anchorToProfileId = algopy.BoxMap(algopy.UInt64,algopy.Bytes)
+        self.nonce = algopy.BoxMap(algopy.Account,algopy.UInt64)
         self.profilesById = algopy.BoxMap(algopy.Bytes,algopy.Bytes)
         self.profileApplicationIdToPendingAnchor = algopy.BoxMap(algopy.BigUInt,algopy.Account,key_prefix="")
+    @arc4.abimethod()
+    def getAccountNonce(self,account:algopy.Account) -> algopy.UInt64:
+        value = self.nonce[account]
+        
+        return value
     
+    @arc4.abimethod()
+    def incrementAccountNonce(self,account:algopy.Account) -> None:
+        value,valid = self.nonce.maybe(account)
+        if valid:
+            self.nonce[account] = value + 1
+        else:
+            self.nonce[account] = algopy.UInt64(1)
     @arc4.abimethod()
     def getProfileById(self, id: algopy.Bytes) -> Profile:
         return Profile.from_bytes(self.profilesById[id])
@@ -27,12 +41,22 @@ class Registry(algopy.ARC4Contract):
     def getProfileByAnchor(self, anchor: algopy.UInt64) -> Profile:
         return Profile.from_bytes(self.profilesById[self.anchorToProfileId[anchor]])
     @arc4.abimethod()
-    def createProfile(self, nonce: arc4.UInt256,name:algopy.String,metadata:algopy.String) -> algopy.Bytes:
-         id = algopy.op.sha256(algopy.op.concat(nonce.bytes,algopy.Txn.sender.bytes))
+    def getProfileId(self, nonce: arc4.UInt256,name:algopy.String,metadata:algopy.String) -> algopy.Bytes:
+        id = algopy.op.sha256(algopy.op.concat(nonce.bytes,algopy.Txn.sender.bytes))
+        return id
+    @arc4.abimethod()
+    def addAnchorToProfileId(self,anchor:algopy.UInt64,profileId:algopy.Bytes) -> None:
+        profileBytes = self.profilesById[profileId]
+        profile = Profile.from_bytes(profileBytes)
+        assert profile.anchor == anchor, "Profile has a different anchor"
+        self.anchorToProfileId[anchor] = profileId
+    @arc4.abimethod()
+    def createProfile(self,id:algopy.Bytes,name:algopy.String,metadata:algopy.String) -> algopy.UInt64:
+         nonce = self.getAccountNonce(algopy.Txn.sender)
          anchor_app = arc4.arc4_create(Anchor,fee=2000).created_app
          profile = Profile(
              id=arc4.DynamicBytes.from_bytes(id),
-             nonce=nonce,
+             nonce=algopy.arc4.UInt64(nonce),
              name=algopy.arc4.String.from_bytes(name.bytes),
              metadata=algopy.arc4.String.from_bytes(metadata.bytes),
              owner=arc4.Address.from_bytes(algopy.Txn.sender.bytes),
@@ -41,9 +65,8 @@ class Registry(algopy.ARC4Contract):
             )
         
          self.profilesById[id] = profile.copy().bytes
-         self.anchorToProfileId[anchor_app.id] = id
-
-         return id
+        #  self.anchorToProfileId[anchor_app.id] = id
+         return anchor_app.id
     
     @arc4.abimethod()
     def addMember(self,profileId:algopy.Bytes,member:arc4.Address) -> None:
