@@ -1,0 +1,231 @@
+#pragma version 10
+
+smart_contracts.anchor.contract.Anchor.approval_program:
+    intcblock 1 0 1000 4
+    bytecblock "owner"
+    txn ApplicationID
+    bnz main_after_if_else@2
+    callsub __init__
+
+main_after_if_else@2:
+    callsub __puya_arc4_router__
+    return
+
+
+// smart_contracts.anchor.contract.Anchor.__init__() -> void:
+__init__:
+    proto 0 0
+    bytec_0 // "owner"
+    global ZeroAddress
+    app_global_put
+    retsub
+
+
+// smart_contracts.anchor.contract.Anchor.__puya_arc4_router__() -> uint64:
+__puya_arc4_router__:
+    proto 0 1
+    txn NumAppArgs
+    bz __puya_arc4_router___bare_routing@9
+    pushbytess 0x854a518d 0xd7e74781 0x3bd7ce2c 0x0fd99870 0x2826b202 // method "create(account)void", method "createAndOptIn(account,application)void", method "transferAlgo(account,uint64)void", method "transferAsset(account,asset,uint64)void", method "opt_into_asset(asset)void"
+    txna ApplicationArgs 0
+    match __puya_arc4_router___create_route@2 __puya_arc4_router___createAndOptIn_route@3 __puya_arc4_router___transferAlgo_route@4 __puya_arc4_router___transferAsset_route@5 __puya_arc4_router___opt_into_asset_route@6
+    intc_1 // 0
+    retsub
+
+__puya_arc4_router___create_route@2:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    callsub create
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___createAndOptIn_route@3:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    txna ApplicationArgs 2
+    btoi
+    txnas Applications
+    callsub createAndOptIn
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___transferAlgo_route@4:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    txna ApplicationArgs 2
+    btoi
+    callsub transferAlgo
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___transferAsset_route@5:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    txna ApplicationArgs 2
+    btoi
+    txnas Assets
+    txna ApplicationArgs 3
+    btoi
+    callsub transferAsset
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___opt_into_asset_route@6:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Assets
+    callsub opt_into_asset
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___bare_routing@9:
+    txn OnCompletion
+    bnz __puya_arc4_router___after_if_else@13
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___after_if_else@13:
+    intc_1 // 0
+    retsub
+
+
+// smart_contracts.anchor.contract.Anchor.create(owner: bytes) -> void:
+create:
+    proto 1 0
+    intc_1 // 0
+    bytec_0 // "owner"
+    app_global_get_ex
+    assert // check self.owner exists
+    global ZeroAddress
+    ==
+    assert // Contract has already been initialized
+    bytec_0 // "owner"
+    frame_dig -1
+    app_global_put
+    retsub
+
+
+// smart_contracts.anchor.contract.Anchor.createAndOptIn(owner: bytes, appId: uint64) -> void:
+createAndOptIn:
+    proto 2 0
+    intc_1 // 0
+    bytec_0 // "owner"
+    app_global_get_ex
+    assert // check self.owner exists
+    global ZeroAddress
+    ==
+    assert // Contract has already been initialized
+    bytec_0 // "owner"
+    frame_dig -2
+    app_global_put
+    itxn_begin
+    global MinTxnFee
+    intc_0 // OptIn
+    itxn_field OnCompletion
+    frame_dig -1
+    itxn_field ApplicationID
+    pushint 6 // appl
+    itxn_field TypeEnum
+    itxn_field Fee
+    itxn_submit
+    retsub
+
+
+// smart_contracts.anchor.contract.Anchor.transferAlgo(receiver: bytes, amount: uint64) -> void:
+transferAlgo:
+    proto 2 0
+    callsub _onlyOwner
+    itxn_begin
+    frame_dig -1
+    itxn_field Amount
+    frame_dig -2
+    itxn_field Receiver
+    intc_0 // pay
+    itxn_field TypeEnum
+    intc_2 // 1000
+    itxn_field Fee
+    itxn_submit
+    retsub
+
+
+// smart_contracts.anchor.contract.Anchor._onlyOwner() -> void:
+_onlyOwner:
+    proto 0 0
+    intc_1 // 0
+    bytec_0 // "owner"
+    app_global_get_ex
+    assert // check self.owner exists
+    txn Sender
+    ==
+    assert // Only the account set in global_state.owner may call this method
+    retsub
+
+
+// smart_contracts.anchor.contract.Anchor.transferAsset(receiver: bytes, asset: uint64, amount: uint64) -> void:
+transferAsset:
+    proto 3 0
+    callsub _onlyOwner
+    itxn_begin
+    frame_dig -1
+    itxn_field AssetAmount
+    frame_dig -2
+    itxn_field XferAsset
+    frame_dig -3
+    itxn_field AssetReceiver
+    intc_3 // axfer
+    itxn_field TypeEnum
+    intc_2 // 1000
+    itxn_field Fee
+    itxn_submit
+    retsub
+
+
+// smart_contracts.anchor.contract.Anchor.opt_into_asset(asset: uint64) -> void:
+opt_into_asset:
+    proto 1 0
+    callsub _onlyOwner
+    itxn_begin
+    txn Sender
+    intc_1 // 0
+    itxn_field AssetAmount
+    frame_dig -1
+    itxn_field XferAsset
+    itxn_field AssetReceiver
+    intc_3 // axfer
+    itxn_field TypeEnum
+    intc_2 // 1000
+    itxn_field Fee
+    itxn_submit
+    retsub

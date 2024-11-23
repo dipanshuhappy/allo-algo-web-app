@@ -5,7 +5,6 @@ import { seedFromMnemonic } from 'algosdk'
 // Below is a showcase of various deployment options you can use in TypeScript Client
 export async function deploy() {
   console.log('=== Deploying Allo ===')
-  seedFromMnemonic('then high clap skirt lake steel museum derive wagon shop ramp error')
 
   const algorand = algokit.AlgorandClient.fromEnvironment()
   const deployer = await algorand.account.fromEnvironment('DEPLOYER')
