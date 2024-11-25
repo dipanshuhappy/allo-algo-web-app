@@ -10,61 +10,69 @@ class proposalData(arc4.Struct):
     proposalDescription: arc4.String
 
 
-class QuadraticVoting(ARC4Contract):
+class QuadraticVoting(algopy.ARC4Contract):
+
     def __init__(self) -> None:
-        self.totalFunds: algopy.UInt64 = algopy.UInt64(0)
+        self.totalFunds = algopy.UInt64(0)
         self.proposals = BoxMap(algopy.UInt64, proposalData)
-        self.voterCredits = BoxMap(Account, algopy.UInt64, key_prefix=b"voter_credits")
-        self.proposalVotes = BoxMap(algopy.UInt64, DynamicArray[Address], key_prefix=b"proposal_votes")
-        self.proposal_id_incrementer: algopy.UInt64 = algopy.UInt64(0)
-        self.isActive: bool = False
+        self.voters = DynamicArray[arc4.Address]()
+        self.voterCredits = BoxMap(arc4.Address, algopy.UInt64, key_prefix=b"voter_credits")
+        self.proposalVoters = BoxMap(algopy.UInt64, DynamicArray[arc4.Address], key_prefix=b"proposal_votes")
+        self.proposal_id_incrementer = algopy.UInt64(0)
+        self.isActive = False
 
     @arc4.abimethod()
     def initialize(self) -> None:
+        # self.__assertNonEmpty(_voters) 
         self.isActive = True
+        # for voter in _voters:
+        #     self.voters.append(voter)
+        #     self.voterCredits[voter] = algopy.UInt64(100)
 
     @arc4.abimethod()
     def createProposal(self, _proposalTitle: String, _proposalDescription: String) -> None:
         self.__isActive()
         self.proposal_id_incrementer += algopy.UInt64(1)
         new_proposal = proposalData(
-            proposalId=self.proposal_id_incrementer,
-            proposalTitle=_proposalTitle,
-            proposalOwner=arc4.Address.from_bytes(algopy.op.Txn.sender),
-            proposalVotes=arc4.UInt64(0),
-            proposalDescription=_proposalDescription
+            proposalId = arc4.UInt64.from_bytes(algopy.op.itob(self.proposal_id_incrementer)),
+            proposalTitle = _proposalTitle,
+            proposalOwner = arc4.Address(algopy.op.Txn.sender),
+            proposalVotes = arc4.UInt64(0),
+            proposalDescription = _proposalDescription
         )
-        self.proposals[self.proposal_id_incrementer] = new_proposal
+        self.proposals[self.proposal_id_incrementer] = new_proposal.copy()
 
     @arc4.abimethod()
-    def allocateCredits(self, _amount: algopy.UInt64) -> None:
-        assert _amount > 0, "Invalid credit amount"
-        self.voterCredits[Txn.sender] += _amount
-        self.totalFunds += _amount
+    def allocateCredits(self, _voters: DynamicArray[arc4.Address]) -> None:
+        self.__assertNonEmpty(_voters)
+        for voter in _voters:
+            self.voters.append(voter)
+            self.voterCredits[voter] = algopy.UInt64(100)
 
     @arc4.abimethod()
     def vote(self, _proposalId: algopy.UInt64, _credits: algopy.UInt64) -> None:
         self.__isActive()
         assert (_proposalId > 0 and _proposalId <= self.proposal_id_incrementer), "Invalid proposal id"
-        voter_credits = self.voterCredits[Txn.sender]
+        voter_credits = self.voterCredits[arc4.Address(algopy.op.Txn.sender)]
         assert voter_credits >= _credits, "Insufficient credits"
         assert _credits > 0, "Credits must be greater than zero"
 
-        quadratic_cost = _credits
-        assert voter_credits >= quadratic_cost, "Insufficient credits for quadratic voting"
-
-        self.voterCredits[Txn.sender] -= quadratic_cost
-        proposal = self.proposals[_proposalId]
-        proposal.proposalVotes += _credits
-        self.proposalVotes[_proposalId].append(Txn.sender)
+        self.voterCredits[arc4.Address(algopy.op.Txn.sender)] -= _credits
+        proposal = self.proposals[_proposalId].copy()
+        proposal.proposalVotes = arc4.UInt64.from_bytes(algopy.op.itob(proposal.proposalVotes.native + _credits))
+        self.proposalVoters[_proposalId].append(arc4.Address(algopy.op.Txn.sender))
 
     @arc4.abimethod()
-    def getProposalVotes(self, _proposalId: algopy.UInt64) -> algopy.UInt64:
+    def getProposalVotes(self, _proposalId: algopy.UInt64) -> arc4.UInt64:
         self.__isActive()
         assert (_proposalId > 0 and _proposalId <= self.proposal_id_incrementer), "Invalid proposal id"
-        proposal = self.proposals[_proposalId]
+        proposal = self.proposals[_proposalId].copy()
         return proposal.proposalVotes
 
     @algopy.subroutine
     def __isActive(self) -> None:
         assert self.isActive == True, "Contract is not active"
+
+    @algopy.subroutine
+    def __assertNonEmpty(self, _array: DynamicArray[arc4.Address]) -> None:
+        assert _array.length > 0, "voters array cannot be empty"

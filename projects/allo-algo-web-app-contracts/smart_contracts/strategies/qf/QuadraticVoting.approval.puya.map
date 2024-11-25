@@ -1,0 +1,2780 @@
+{
+  "version": 3,
+  "sources": [
+    "contract.py"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAcA;;;AACQ;;;;;;;;;;;;AAAkB;AAAlB;AAEA;AAAc;;;;AAAd;AAGA;AAA+B;AAA/B;AACA;AAAgB;AAAhB;;AATR;;;AAAA;;AAAA;;;AAAA;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;;;AAAA;;;;;;;;;;;;AAAA;AAAA;AAWK;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;AAAA;AAAA;AAQA;;AAAA;AAAA;AAAA;;AAAA;AAnBL;;;AAAA;;;AAmBK;;;AAAA;AAAA;AAaA;;AAAA;AAAA;AAAA;;AAAA;AAhCL;;;AAgCK;;;AAAA;AAAA;AAOA;;AAAA;AAAA;AAAA;;AAAA;AAvCL;;;AAAA;AAAA;;;AAAA;AAuCK;;;AAAA;AAAA;AAaA;;AAAA;AAAA;AAAA;;AAAA;AApDL;;;AAAA;AAoDK;;;AAAA;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AApDL;;AAAA;;;;;;;;;AAAA;AAAA;AAWA;;;AAGQ;AAAgB;AAAhB;;AAKR;;;AAEQ;;;AACA;AAAA;AAAA;AAAA;AAAgC;AAAhC;AAAA;AAAA;AAAA;AAEuD;AAAA;AAAA;AAAA;AAAf;AAEP;;AAHlB;AAAA;;;;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAIK;;;;;;;;;;AAJL;AAAA;AAAA;AAAA;;;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAOA;AAAA;AAAA;AAAA;AAAf;AAAA;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;;AA6BR;;;AAEe;AAAA;AAAA;AAAA;AAAiB;AAAjB;AAAP;;AA7BR;;;AAEQ;;AAAA;;;;AAAA;;AACR;AAAA;;AAAA;;AAAA;;AAAA;AAAA;;;AAAA;;AAAA;;;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AACY;AAAA;AAAA;AAAA;AAAA;;;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AACA;AAAA;AAAA;AAA2B;;AAA3B;AAAA;;;;;;;;;AA0BZ;;;AAEe;;AAAA;AAAA;AAAP;;;;AA1BR;;;AAEQ;;;AACQ;;AAAA;;;AAAmC;AAAA;AAAA;AAAA;AAAf;;AAAA;AAApB;;;;;;;;AAAR;AACgB;AAA+B;;AAA/B;AAAA;AAAA;AAAA;AAAA;AAAA;AACT;;AAAA;AAAP;AACA;;AAAA;AAEA;AAA+B;;AAA/B;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAA+B;;AAA/B;AAAA;AAAA;;AAAA;AAAA;AAAA;AACW;;AAAA;AAAA;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAEX;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAqD;;AAArD;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;;AAAA;;AAAA;;AAER;;;AAEQ;;;AACQ;;AAAA;;;AAAmC;AAAA;AAAA;AAAA;AAAf;;AAAA;AAApB;;;;;;;;AAAR;AACW;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AACJ;;;AAAP",
+  "op_pc_offset": 0,
+  "pc_events": {
+    "1": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.approval_program",
+      "params": {},
+      "block": "smart_contracts.strategies.qf.contract.QuadraticVoting.approval_program",
+      "stack_in": [],
+      "op": "intcblock 0 1 32"
+    },
+    "6": {
+      "op": "bytecblock \"proposal_id_incrementer\" 0x766f7465725f63726564697473 \"voters\" \"isActive\" \"proposals\""
+    },
+    "72": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "74": {
+      "op": "bnz main_after_if_else@2",
+      "stack_out": []
+    },
+    "77": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.__init__",
+      "op": "callsub __init__"
+    },
+    "80": {
+      "block": "main_after_if_else@2",
+      "stack_in": [],
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.__puya_arc4_router__",
+      "op": "callsub __puya_arc4_router__",
+      "defined_out": [
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0"
+      ]
+    },
+    "83": {
+      "op": "return",
+      "stack_out": []
+    },
+    "84": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.__init__",
+      "params": {},
+      "block": "__init__",
+      "stack_in": [],
+      "op": "proto 0 0"
+    },
+    "87": {
+      "op": "pushbytes \"totalFunds\"",
+      "defined_out": [
+        "\"totalFunds\""
+      ],
+      "stack_out": [
+        "\"totalFunds\""
+      ]
+    },
+    "99": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "\"totalFunds\"",
+        "0"
+      ],
+      "stack_out": [
+        "\"totalFunds\"",
+        "0"
+      ]
+    },
+    "100": {
+      "op": "app_global_put",
+      "stack_out": []
+    },
+    "101": {
+      "op": "bytec_2 // \"voters\"",
+      "defined_out": [
+        "\"voters\""
+      ],
+      "stack_out": [
+        "\"voters\""
+      ]
+    },
+    "102": {
+      "op": "pushbytes 0x0000",
+      "defined_out": [
+        "\"voters\"",
+        "0x0000"
+      ],
+      "stack_out": [
+        "\"voters\"",
+        "0x0000"
+      ]
+    },
+    "106": {
+      "op": "app_global_put",
+      "stack_out": []
+    },
+    "107": {
+      "op": "bytec_0 // \"proposal_id_incrementer\"",
+      "defined_out": [
+        "\"proposal_id_incrementer\""
+      ],
+      "stack_out": [
+        "\"proposal_id_incrementer\""
+      ]
+    },
+    "108": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "\"proposal_id_incrementer\"",
+        "0"
+      ]
+    },
+    "109": {
+      "op": "app_global_put",
+      "stack_out": []
+    },
+    "110": {
+      "op": "bytec_3 // \"isActive\"",
+      "defined_out": [
+        "\"isActive\""
+      ],
+      "stack_out": [
+        "\"isActive\""
+      ]
+    },
+    "111": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "\"isActive\"",
+        "0"
+      ]
+    },
+    "112": {
+      "op": "app_global_put",
+      "stack_out": []
+    },
+    "113": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "114": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.__puya_arc4_router__",
+      "params": {},
+      "block": "__puya_arc4_router__",
+      "stack_in": [],
+      "op": "proto 0 1"
+    },
+    "117": {
+      "op": "txn NumAppArgs",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "119": {
+      "op": "bz __puya_arc4_router___bare_routing@9",
+      "stack_out": []
+    },
+    "122": {
+      "op": "pushbytess 0xfd2c93cd 0x373e6fa6 0xc919b38a 0xa278a8b6 0x8abfbf6f // method \"initialize()void\", method \"createProposal(string,string)void\", method \"allocateCredits(address[])void\", method \"vote(uint64,uint64)void\", method \"getProposalVotes(uint64)uint64\""
+    },
+    "149": {
+      "op": "txna ApplicationArgs 0",
+      "defined_out": [
+        "Method(allocateCredits(address[])void)",
+        "Method(createProposal(string,string)void)",
+        "Method(getProposalVotes(uint64)uint64)",
+        "Method(initialize()void)",
+        "Method(vote(uint64,uint64)void)",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "Method(initialize()void)",
+        "Method(createProposal(string,string)void)",
+        "Method(allocateCredits(address[])void)",
+        "Method(vote(uint64,uint64)void)",
+        "Method(getProposalVotes(uint64)uint64)",
+        "tmp%2#0"
+      ]
+    },
+    "152": {
+      "op": "match __puya_arc4_router___initialize_route@2 __puya_arc4_router___createProposal_route@3 __puya_arc4_router___allocateCredits_route@4 __puya_arc4_router___vote_route@5 __puya_arc4_router___getProposalVotes_route@6",
+      "stack_out": []
+    },
+    "164": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "165": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "166": {
+      "block": "__puya_arc4_router___initialize_route@2",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "168": {
+      "op": "!",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "169": {
+      "op": "assert // OnCompletion is NoOp",
+      "stack_out": []
+    },
+    "170": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%5#0"
+      ],
+      "stack_out": [
+        "tmp%5#0"
+      ]
+    },
+    "172": {
+      "op": "assert // is not creating",
+      "stack_out": []
+    },
+    "173": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.initialize",
+      "op": "callsub initialize"
+    },
+    "176": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "177": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "178": {
+      "block": "__puya_arc4_router___createProposal_route@3",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "tmp%7#0"
+      ]
+    },
+    "180": {
+      "op": "!",
+      "defined_out": [
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%8#0"
+      ]
+    },
+    "181": {
+      "op": "assert // OnCompletion is NoOp",
+      "stack_out": []
+    },
+    "182": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%9#0"
+      ]
+    },
+    "184": {
+      "op": "assert // is not creating",
+      "stack_out": []
+    },
+    "185": {
+      "op": "txna ApplicationArgs 1"
+    },
+    "188": {
+      "op": "txna ApplicationArgs 2",
+      "defined_out": [
+        "tmp%11#0",
+        "tmp%12#0"
+      ],
+      "stack_out": [
+        "tmp%11#0",
+        "tmp%12#0"
+      ]
+    },
+    "191": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.createProposal",
+      "op": "callsub createProposal",
+      "stack_out": []
+    },
+    "194": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "195": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "196": {
+      "block": "__puya_arc4_router___allocateCredits_route@4",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "tmp%13#0"
+      ]
+    },
+    "198": {
+      "op": "!",
+      "defined_out": [
+        "tmp%14#0"
+      ],
+      "stack_out": [
+        "tmp%14#0"
+      ]
+    },
+    "199": {
+      "op": "assert // OnCompletion is NoOp",
+      "stack_out": []
+    },
+    "200": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%15#0"
+      ],
+      "stack_out": [
+        "tmp%15#0"
+      ]
+    },
+    "202": {
+      "op": "assert // is not creating",
+      "stack_out": []
+    },
+    "203": {
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "tmp%17#0"
+      ],
+      "stack_out": [
+        "tmp%17#0"
+      ]
+    },
+    "206": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.allocateCredits",
+      "op": "callsub allocateCredits",
+      "stack_out": []
+    },
+    "209": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "210": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "211": {
+      "block": "__puya_arc4_router___vote_route@5",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%18#0"
+      ],
+      "stack_out": [
+        "tmp%18#0"
+      ]
+    },
+    "213": {
+      "op": "!",
+      "defined_out": [
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "tmp%19#0"
+      ]
+    },
+    "214": {
+      "op": "assert // OnCompletion is NoOp",
+      "stack_out": []
+    },
+    "215": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%20#0"
+      ],
+      "stack_out": [
+        "tmp%20#0"
+      ]
+    },
+    "217": {
+      "op": "assert // is not creating",
+      "stack_out": []
+    },
+    "218": {
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "tmp%22#0"
+      ],
+      "stack_out": [
+        "tmp%22#0"
+      ]
+    },
+    "221": {
+      "op": "btoi",
+      "defined_out": [
+        "tmp%23#0"
+      ],
+      "stack_out": [
+        "tmp%23#0"
+      ]
+    },
+    "222": {
+      "op": "txna ApplicationArgs 2",
+      "defined_out": [
+        "tmp%23#0",
+        "tmp%24#0"
+      ],
+      "stack_out": [
+        "tmp%23#0",
+        "tmp%24#0"
+      ]
+    },
+    "225": {
+      "op": "btoi",
+      "defined_out": [
+        "tmp%23#0",
+        "tmp%25#0"
+      ],
+      "stack_out": [
+        "tmp%23#0",
+        "tmp%25#0"
+      ]
+    },
+    "226": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.vote",
+      "op": "callsub vote",
+      "stack_out": []
+    },
+    "229": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "230": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "231": {
+      "block": "__puya_arc4_router___getProposalVotes_route@6",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%26#0"
+      ],
+      "stack_out": [
+        "tmp%26#0"
+      ]
+    },
+    "233": {
+      "op": "!",
+      "defined_out": [
+        "tmp%27#0"
+      ],
+      "stack_out": [
+        "tmp%27#0"
+      ]
+    },
+    "234": {
+      "op": "assert // OnCompletion is NoOp",
+      "stack_out": []
+    },
+    "235": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%28#0"
+      ],
+      "stack_out": [
+        "tmp%28#0"
+      ]
+    },
+    "237": {
+      "op": "assert // is not creating",
+      "stack_out": []
+    },
+    "238": {
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "tmp%30#0"
+      ],
+      "stack_out": [
+        "tmp%30#0"
+      ]
+    },
+    "241": {
+      "op": "btoi",
+      "defined_out": [
+        "tmp%31#0"
+      ],
+      "stack_out": [
+        "tmp%31#0"
+      ]
+    },
+    "242": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.getProposalVotes",
+      "op": "callsub getProposalVotes",
+      "defined_out": [
+        "tmp%32#0"
+      ],
+      "stack_out": [
+        "tmp%32#0"
+      ]
+    },
+    "245": {
+      "op": "pushbytes 0x151f7c75",
+      "defined_out": [
+        "0x151f7c75",
+        "tmp%32#0"
+      ],
+      "stack_out": [
+        "tmp%32#0",
+        "0x151f7c75"
+      ]
+    },
+    "251": {
+      "op": "swap",
+      "stack_out": [
+        "0x151f7c75",
+        "tmp%32#0"
+      ]
+    },
+    "252": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%33#0"
+      ],
+      "stack_out": [
+        "tmp%33#0"
+      ]
+    },
+    "253": {
+      "op": "log",
+      "stack_out": []
+    },
+    "254": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "255": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "256": {
+      "block": "__puya_arc4_router___bare_routing@9",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%34#0"
+      ],
+      "stack_out": [
+        "tmp%34#0"
+      ]
+    },
+    "258": {
+      "op": "bnz __puya_arc4_router___after_if_else@13",
+      "stack_out": []
+    },
+    "261": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%35#0"
+      ],
+      "stack_out": [
+        "tmp%35#0"
+      ]
+    },
+    "263": {
+      "op": "!",
+      "defined_out": [
+        "tmp%36#0"
+      ],
+      "stack_out": [
+        "tmp%36#0"
+      ]
+    },
+    "264": {
+      "op": "assert // is creating",
+      "stack_out": []
+    },
+    "265": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "266": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "267": {
+      "block": "__puya_arc4_router___after_if_else@13",
+      "stack_in": [],
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "268": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "269": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.initialize",
+      "params": {},
+      "block": "initialize",
+      "stack_in": [],
+      "op": "proto 0 0"
+    },
+    "272": {
+      "op": "bytec_3 // \"isActive\"",
+      "defined_out": [
+        "\"isActive\""
+      ],
+      "stack_out": [
+        "\"isActive\""
+      ]
+    },
+    "273": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "\"isActive\"",
+        "1"
+      ],
+      "stack_out": [
+        "\"isActive\"",
+        "1"
+      ]
+    },
+    "274": {
+      "op": "app_global_put",
+      "stack_out": []
+    },
+    "275": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "276": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.createProposal",
+      "params": {
+        "_proposalTitle#0": "bytes",
+        "_proposalDescription#0": "bytes"
+      },
+      "block": "createProposal",
+      "stack_in": [],
+      "op": "proto 2 0"
+    },
+    "279": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.__isActive",
+      "op": "callsub __isActive"
+    },
+    "282": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "283": {
+      "op": "bytec_0 // \"proposal_id_incrementer\"",
+      "defined_out": [
+        "\"proposal_id_incrementer\"",
+        "0"
+      ],
+      "stack_out": [
+        "0",
+        "\"proposal_id_incrementer\""
+      ]
+    },
+    "284": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "285": {
+      "op": "assert // check self.proposal_id_incrementer exists",
+      "stack_out": [
+        "maybe_value%0#0"
+      ]
+    },
+    "286": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "maybe_value%0#0",
+        "1"
+      ]
+    },
+    "287": {
+      "op": "+",
+      "defined_out": [
+        "new_state_value%0#0"
+      ],
+      "stack_out": [
+        "new_state_value%0#0"
+      ]
+    },
+    "288": {
+      "op": "bytec_0 // \"proposal_id_incrementer\"",
+      "stack_out": [
+        "new_state_value%0#0",
+        "\"proposal_id_incrementer\""
+      ]
+    },
+    "289": {
+      "op": "swap",
+      "stack_out": [
+        "\"proposal_id_incrementer\"",
+        "new_state_value%0#0"
+      ]
+    },
+    "290": {
+      "op": "app_global_put",
+      "stack_out": []
+    },
+    "291": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "0"
+      ]
+    },
+    "292": {
+      "op": "bytec_0 // \"proposal_id_incrementer\"",
+      "stack_out": [
+        "0",
+        "\"proposal_id_incrementer\""
+      ]
+    },
+    "293": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "maybe_exists%1#0",
+        "maybe_value%1#0"
+      ],
+      "stack_out": [
+        "maybe_value%1#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "294": {
+      "op": "assert // check self.proposal_id_incrementer exists",
+      "stack_out": [
+        "maybe_value%1#0"
+      ]
+    },
+    "295": {
+      "op": "itob",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "296": {
+      "op": "txn Sender",
+      "defined_out": [
+        "tmp%0#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "tmp%1#0"
+      ]
+    },
+    "298": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%1#0",
+        "tmp%0#0"
+      ]
+    },
+    "299": {
+      "op": "pushbytes 0x0034",
+      "defined_out": [
+        "0x0034",
+        "tmp%0#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0",
+        "tmp%0#0",
+        "0x0034"
+      ]
+    },
+    "303": {
+      "op": "concat",
+      "defined_out": [
+        "encoded_tuple_buffer%2#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0",
+        "encoded_tuple_buffer%2#0"
+      ]
+    },
+    "304": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "_proposalTitle#0 (copy)",
+        "encoded_tuple_buffer%2#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0",
+        "encoded_tuple_buffer%2#0",
+        "_proposalTitle#0 (copy)"
+      ]
+    },
+    "306": {
+      "op": "len",
+      "defined_out": [
+        "data_length%0#0",
+        "encoded_tuple_buffer%2#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0",
+        "encoded_tuple_buffer%2#0",
+        "data_length%0#0"
+      ]
+    },
+    "307": {
+      "op": "pushint 52 // 52",
+      "defined_out": [
+        "52",
+        "data_length%0#0",
+        "encoded_tuple_buffer%2#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0",
+        "encoded_tuple_buffer%2#0",
+        "data_length%0#0",
+        "52"
+      ]
+    },
+    "309": {
+      "op": "+",
+      "defined_out": [
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%2#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0",
+        "encoded_tuple_buffer%2#0",
+        "current_tail_offset%1#0"
+      ]
+    },
+    "310": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%1#0",
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%2#0"
+      ]
+    },
+    "311": {
+      "op": "uncover 2",
+      "stack_out": [
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%2#0",
+        "tmp%1#0"
+      ]
+    },
+    "313": {
+      "op": "concat",
+      "defined_out": [
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%3#0"
+      ],
+      "stack_out": [
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%3#0"
+      ]
+    },
+    "314": {
+      "op": "pushbytes 0x0000000000000000",
+      "defined_out": [
+        "0x0000000000000000",
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%3#0"
+      ],
+      "stack_out": [
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%3#0",
+        "0x0000000000000000"
+      ]
+    },
+    "324": {
+      "op": "concat",
+      "defined_out": [
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%4#0"
+      ],
+      "stack_out": [
+        "current_tail_offset%1#0",
+        "encoded_tuple_buffer%4#0"
+      ]
+    },
+    "325": {
+      "op": "swap",
+      "stack_out": [
+        "encoded_tuple_buffer%4#0",
+        "current_tail_offset%1#0"
+      ]
+    },
+    "326": {
+      "op": "itob",
+      "defined_out": [
+        "as_bytes%1#0",
+        "encoded_tuple_buffer%4#0"
+      ],
+      "stack_out": [
+        "encoded_tuple_buffer%4#0",
+        "as_bytes%1#0"
+      ]
+    },
+    "327": {
+      "op": "extract 6 2",
+      "defined_out": [
+        "encoded_tuple_buffer%4#0",
+        "offset_as_uint16%1#0"
+      ],
+      "stack_out": [
+        "encoded_tuple_buffer%4#0",
+        "offset_as_uint16%1#0"
+      ]
+    },
+    "330": {
+      "op": "concat",
+      "defined_out": [
+        "encoded_tuple_buffer%5#0"
+      ],
+      "stack_out": [
+        "encoded_tuple_buffer%5#0"
+      ]
+    },
+    "331": {
+      "op": "frame_dig -2",
+      "stack_out": [
+        "encoded_tuple_buffer%5#0",
+        "_proposalTitle#0 (copy)"
+      ]
+    },
+    "333": {
+      "op": "concat",
+      "defined_out": [
+        "encoded_tuple_buffer%6#0"
+      ],
+      "stack_out": [
+        "encoded_tuple_buffer%6#0"
+      ]
+    },
+    "334": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "_proposalDescription#0 (copy)",
+        "encoded_tuple_buffer%6#0"
+      ],
+      "stack_out": [
+        "encoded_tuple_buffer%6#0",
+        "_proposalDescription#0 (copy)"
+      ]
+    },
+    "336": {
+      "op": "concat",
+      "defined_out": [
+        "new_proposal#0"
+      ],
+      "stack_out": [
+        "new_proposal#0"
+      ]
+    },
+    "337": {
+      "op": "intc_0 // 0",
+      "stack_out": [
+        "new_proposal#0",
+        "0"
+      ]
+    },
+    "338": {
+      "op": "bytec_0 // \"proposal_id_incrementer\"",
+      "stack_out": [
+        "new_proposal#0",
+        "0",
+        "\"proposal_id_incrementer\""
+      ]
+    },
+    "339": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "maybe_exists%2#0",
+        "maybe_value%2#0",
+        "new_proposal#0"
+      ],
+      "stack_out": [
+        "new_proposal#0",
+        "maybe_value%2#0",
+        "maybe_exists%2#0"
+      ]
+    },
+    "340": {
+      "op": "assert // check self.proposal_id_incrementer exists",
+      "stack_out": [
+        "new_proposal#0",
+        "maybe_value%2#0"
+      ]
+    },
+    "341": {
+      "op": "itob",
+      "defined_out": [
+        "new_proposal#0",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "new_proposal#0",
+        "tmp%2#0"
+      ]
+    },
+    "342": {
+      "op": "bytec 4 // \"proposals\"",
+      "defined_out": [
+        "\"proposals\"",
+        "new_proposal#0",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "new_proposal#0",
+        "tmp%2#0",
+        "\"proposals\""
+      ]
+    },
+    "344": {
+      "op": "swap",
+      "stack_out": [
+        "new_proposal#0",
+        "\"proposals\"",
+        "tmp%2#0"
+      ]
+    },
+    "345": {
+      "op": "concat",
+      "defined_out": [
+        "new_proposal#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "new_proposal#0",
+        "tmp%3#0"
+      ]
+    },
+    "346": {
+      "op": "dup",
+      "defined_out": [
+        "new_proposal#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)"
+      ],
+      "stack_out": [
+        "new_proposal#0",
+        "tmp%3#0",
+        "tmp%3#0 (copy)"
+      ]
+    },
+    "347": {
+      "op": "box_del",
+      "defined_out": [
+        "new_proposal#0",
+        "tmp%3#0",
+        "{box_del}"
+      ],
+      "stack_out": [
+        "new_proposal#0",
+        "tmp%3#0",
+        "{box_del}"
+      ]
+    },
+    "348": {
+      "op": "pop",
+      "stack_out": [
+        "new_proposal#0",
+        "tmp%3#0"
+      ]
+    },
+    "349": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%3#0",
+        "new_proposal#0"
+      ]
+    },
+    "350": {
+      "op": "box_put",
+      "stack_out": []
+    },
+    "351": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "352": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.__isActive",
+      "params": {},
+      "block": "__isActive",
+      "stack_in": [],
+      "op": "proto 0 0"
+    },
+    "355": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "356": {
+      "op": "bytec_3 // \"isActive\"",
+      "defined_out": [
+        "\"isActive\"",
+        "0"
+      ],
+      "stack_out": [
+        "0",
+        "\"isActive\""
+      ]
+    },
+    "357": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "358": {
+      "op": "assert // check self.isActive exists",
+      "stack_out": [
+        "maybe_value%0#0"
+      ]
+    },
+    "359": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "maybe_value%0#0",
+        "1"
+      ]
+    },
+    "360": {
+      "op": "==",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "361": {
+      "op": "assert // Contract is not active",
+      "stack_out": []
+    },
+    "362": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "363": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.allocateCredits",
+      "params": {
+        "_voters#0": "bytes"
+      },
+      "block": "allocateCredits",
+      "stack_in": [],
+      "op": "proto 1 0"
+    },
+    "366": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "_voters#0 (copy)"
+      ],
+      "stack_out": [
+        "_voters#0 (copy)"
+      ]
+    },
+    "368": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.__assertNonEmpty",
+      "op": "callsub __assertNonEmpty",
+      "defined_out": [
+        "_voters#0"
+      ],
+      "stack_out": [
+        "_voters#0"
+      ]
+    },
+    "371": {
+      "op": "dup"
+    },
+    "372": {
+      "op": "frame_bury -1",
+      "stack_out": [
+        "_voters#0 (copy)"
+      ]
+    },
+    "374": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0",
+        "_voters#0 (copy)"
+      ],
+      "stack_out": [
+        "_voters#0 (copy)",
+        "0"
+      ]
+    },
+    "375": {
+      "op": "extract_uint16",
+      "defined_out": [
+        "array_length%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0"
+      ]
+    },
+    "376": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "377": {
+      "block": "allocateCredits_for_header@1",
+      "stack_in": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "op": "frame_dig 1",
+      "defined_out": [
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "379": {
+      "op": "frame_dig 0",
+      "defined_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "array_length%0#0"
+      ]
+    },
+    "381": {
+      "op": "<",
+      "defined_out": [
+        "array_length%0#0",
+        "continue_looping%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "continue_looping%0#0"
+      ]
+    },
+    "382": {
+      "op": "bz allocateCredits_after_for@4",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "385": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "_voters#0 (copy)",
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "_voters#0 (copy)"
+      ]
+    },
+    "387": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "array_head_and_tail%0#0",
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "array_head_and_tail%0#0"
+      ]
+    },
+    "390": {
+      "op": "frame_dig 1",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "array_head_and_tail%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "392": {
+      "op": "dup",
+      "defined_out": [
+        "array_head_and_tail%0#0",
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0 (copy)"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "array_head_and_tail%0#0",
+        "item_index_internal%0#0 (copy)",
+        "item_index_internal%0#0 (copy)"
+      ]
+    },
+    "393": {
+      "op": "cover 2",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "array_head_and_tail%0#0",
+        "item_index_internal%0#0 (copy)"
+      ]
+    },
+    "395": {
+      "op": "intc_2 // 32",
+      "defined_out": [
+        "32",
+        "array_head_and_tail%0#0",
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0 (copy)"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "array_head_and_tail%0#0",
+        "item_index_internal%0#0 (copy)",
+        "32"
+      ]
+    },
+    "396": {
+      "op": "*",
+      "defined_out": [
+        "array_head_and_tail%0#0",
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_offset%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "array_head_and_tail%0#0",
+        "item_offset%0#0"
+      ]
+    },
+    "397": {
+      "op": "intc_2 // 32",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "array_head_and_tail%0#0",
+        "item_offset%0#0",
+        "32"
+      ]
+    },
+    "398": {
+      "op": "extract3 // on error: Index access is out of bounds",
+      "defined_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ]
+    },
+    "399": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0",
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "0"
+      ]
+    },
+    "400": {
+      "op": "bytec_2 // \"voters\"",
+      "defined_out": [
+        "\"voters\"",
+        "0",
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "0",
+        "\"voters\""
+      ]
+    },
+    "401": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "maybe_exists%0#0",
+        "maybe_value%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "402": {
+      "op": "assert // check self.voters exists",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "maybe_value%0#0"
+      ]
+    },
+    "403": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "array_length%0#0",
+        "expr_value_trimmed%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "expr_value_trimmed%0#0"
+      ]
+    },
+    "406": {
+      "op": "dig 1",
+      "defined_out": [
+        "array_length%0#0",
+        "expr_value_trimmed%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "voter#0 (copy)"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "expr_value_trimmed%0#0",
+        "voter#0 (copy)"
+      ]
+    },
+    "408": {
+      "op": "concat",
+      "defined_out": [
+        "array_length%0#0",
+        "concatenated%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concatenated%0#0"
+      ]
+    },
+    "409": {
+      "op": "dup",
+      "defined_out": [
+        "array_length%0#0",
+        "concatenated%0#0",
+        "concatenated%0#0 (copy)",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concatenated%0#0",
+        "concatenated%0#0 (copy)"
+      ]
+    },
+    "410": {
+      "op": "len",
+      "defined_out": [
+        "array_length%0#0",
+        "byte_len%0#0",
+        "concatenated%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concatenated%0#0",
+        "byte_len%0#0"
+      ]
+    },
+    "411": {
+      "op": "intc_2 // 32",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concatenated%0#0",
+        "byte_len%0#0",
+        "32"
+      ]
+    },
+    "412": {
+      "op": "/",
+      "defined_out": [
+        "array_length%0#0",
+        "concatenated%0#0",
+        "item_index_internal%0#0",
+        "len_%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concatenated%0#0",
+        "len_%0#0"
+      ]
+    },
+    "413": {
+      "op": "itob",
+      "defined_out": [
+        "array_length%0#0",
+        "as_bytes%0#0",
+        "concatenated%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concatenated%0#0",
+        "as_bytes%0#0"
+      ]
+    },
+    "414": {
+      "op": "extract 6 2",
+      "defined_out": [
+        "array_length%0#0",
+        "concatenated%0#0",
+        "item_index_internal%0#0",
+        "len_16_bit%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concatenated%0#0",
+        "len_16_bit%0#0"
+      ]
+    },
+    "417": {
+      "op": "swap",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "len_16_bit%0#0",
+        "concatenated%0#0"
+      ]
+    },
+    "418": {
+      "op": "concat",
+      "defined_out": [
+        "array_length%0#0",
+        "concat_result%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concat_result%0#0"
+      ]
+    },
+    "419": {
+      "op": "bytec_2 // \"voters\"",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "concat_result%0#0",
+        "\"voters\""
+      ]
+    },
+    "420": {
+      "op": "swap",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "\"voters\"",
+        "concat_result%0#0"
+      ]
+    },
+    "421": {
+      "op": "app_global_put",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ]
+    },
+    "422": {
+      "op": "bytec_1 // 0x766f7465725f63726564697473",
+      "defined_out": [
+        "0x766f7465725f63726564697473",
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "voter#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "voter#0",
+        "0x766f7465725f63726564697473"
+      ]
+    },
+    "423": {
+      "op": "swap",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "0x766f7465725f63726564697473",
+        "voter#0"
+      ]
+    },
+    "424": {
+      "op": "concat",
+      "defined_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "tmp%0#0"
+      ]
+    },
+    "425": {
+      "op": "pushint 100 // 100",
+      "defined_out": [
+        "100",
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "tmp%0#0",
+        "100"
+      ]
+    },
+    "427": {
+      "op": "itob",
+      "defined_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "new_box_value%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "tmp%0#0",
+        "new_box_value%0#0"
+      ]
+    },
+    "428": {
+      "op": "box_put",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "429": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1",
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0",
+        "1"
+      ]
+    },
+    "430": {
+      "op": "+",
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "431": {
+      "op": "frame_bury 1",
+      "defined_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "433": {
+      "op": "b allocateCredits_for_header@1"
+    },
+    "436": {
+      "block": "allocateCredits_after_for@4",
+      "stack_in": [
+        "array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "retsub": true,
+      "op": "retsub"
+    },
+    "437": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.__assertNonEmpty",
+      "params": {
+        "_array#0": "bytes"
+      },
+      "block": "__assertNonEmpty",
+      "stack_in": [],
+      "op": "proto 1 1"
+    },
+    "440": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "_array#0 (copy)"
+      ],
+      "stack_out": [
+        "_array#0 (copy)"
+      ]
+    },
+    "442": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0",
+        "_array#0 (copy)"
+      ],
+      "stack_out": [
+        "_array#0 (copy)",
+        "0"
+      ]
+    },
+    "443": {
+      "op": "extract_uint16",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "444": {
+      "op": "assert // voters array cannot be empty",
+      "stack_out": []
+    },
+    "445": {
+      "op": "frame_dig -1",
+      "stack_out": [
+        "_array#0 (copy)"
+      ]
+    },
+    "447": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "448": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.vote",
+      "params": {
+        "_proposalId#0": "uint64",
+        "_credits#0": "uint64"
+      },
+      "block": "vote",
+      "stack_in": [],
+      "op": "proto 2 0"
+    },
+    "451": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.__isActive",
+      "op": "callsub __isActive"
+    },
+    "454": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "_proposalId#0 (copy)"
+      ],
+      "stack_out": [
+        "_proposalId#0 (copy)"
+      ]
+    },
+    "456": {
+      "op": "bz vote_bool_false@3",
+      "stack_out": []
+    },
+    "459": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "460": {
+      "op": "bytec_0 // \"proposal_id_incrementer\"",
+      "defined_out": [
+        "\"proposal_id_incrementer\"",
+        "0"
+      ],
+      "stack_out": [
+        "0",
+        "\"proposal_id_incrementer\""
+      ]
+    },
+    "461": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "462": {
+      "op": "assert // check self.proposal_id_incrementer exists",
+      "stack_out": [
+        "maybe_value%0#0"
+      ]
+    },
+    "463": {
+      "op": "frame_dig -2",
+      "stack_out": [
+        "maybe_value%0#0",
+        "_proposalId#0 (copy)"
+      ]
+    },
+    "465": {
+      "op": ">=",
+      "defined_out": [
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0"
+      ]
+    },
+    "466": {
+      "op": "bz vote_bool_false@3",
+      "stack_out": []
+    },
+    "469": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "and_result%0#0"
+      ],
+      "stack_out": [
+        "and_result%0#0"
+      ]
+    },
+    "470": {
+      "op": "b vote_bool_merge@4"
+    },
+    "473": {
+      "block": "vote_bool_false@3",
+      "stack_in": [],
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "and_result%0#0"
+      ],
+      "stack_out": [
+        "and_result%0#0"
+      ]
+    },
+    "474": {
+      "block": "vote_bool_merge@4",
+      "stack_in": [
+        "and_result%0#0"
+      ],
+      "op": "assert // Invalid proposal id",
+      "defined_out": [],
+      "stack_out": []
+    },
+    "475": {
+      "op": "bytec_1 // 0x766f7465725f63726564697473"
+    },
+    "476": {
+      "op": "txn Sender",
+      "defined_out": [
+        "0x766f7465725f63726564697473",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "0x766f7465725f63726564697473",
+        "tmp%2#0"
+      ]
+    },
+    "478": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "479": {
+      "op": "box_get",
+      "defined_out": [
+        "maybe_exists%1#0",
+        "maybe_value%1#0"
+      ],
+      "stack_out": [
+        "maybe_value%1#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "480": {
+      "op": "swap",
+      "stack_out": [
+        "maybe_exists%1#0",
+        "maybe_value%1#0"
+      ]
+    },
+    "481": {
+      "op": "btoi",
+      "defined_out": [
+        "maybe_exists%1#0",
+        "voter_credits#0"
+      ],
+      "stack_out": [
+        "maybe_exists%1#0",
+        "voter_credits#0"
+      ]
+    },
+    "482": {
+      "op": "swap",
+      "stack_out": [
+        "voter_credits#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "483": {
+      "op": "assert // check self.voterCredits entry exists",
+      "stack_out": [
+        "voter_credits#0"
+      ]
+    },
+    "484": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "_credits#0 (copy)",
+        "voter_credits#0"
+      ],
+      "stack_out": [
+        "voter_credits#0",
+        "_credits#0 (copy)"
+      ]
+    },
+    "486": {
+      "op": ">=",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "487": {
+      "op": "assert // Insufficient credits",
+      "stack_out": []
+    },
+    "488": {
+      "op": "frame_dig -1",
+      "stack_out": [
+        "_credits#0 (copy)"
+      ]
+    },
+    "490": {
+      "op": "assert // Credits must be greater than zero",
+      "stack_out": []
+    },
+    "491": {
+      "op": "bytec_1 // 0x766f7465725f63726564697473"
+    },
+    "492": {
+      "op": "txn Sender",
+      "defined_out": [
+        "0x766f7465725f63726564697473",
+        "tmp%6#0"
+      ],
+      "stack_out": [
+        "0x766f7465725f63726564697473",
+        "tmp%6#0"
+      ]
+    },
+    "494": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "tmp%7#0"
+      ]
+    },
+    "495": {
+      "op": "box_get",
+      "defined_out": [
+        "maybe_exists%2#0",
+        "maybe_value%2#0"
+      ],
+      "stack_out": [
+        "maybe_value%2#0",
+        "maybe_exists%2#0"
+      ]
+    },
+    "496": {
+      "op": "swap",
+      "stack_out": [
+        "maybe_exists%2#0",
+        "maybe_value%2#0"
+      ]
+    },
+    "497": {
+      "op": "btoi",
+      "defined_out": [
+        "maybe_exists%2#0",
+        "maybe_value_converted%1#0"
+      ],
+      "stack_out": [
+        "maybe_exists%2#0",
+        "maybe_value_converted%1#0"
+      ]
+    },
+    "498": {
+      "op": "swap",
+      "stack_out": [
+        "maybe_value_converted%1#0",
+        "maybe_exists%2#0"
+      ]
+    },
+    "499": {
+      "op": "assert // check self.voterCredits entry exists",
+      "stack_out": [
+        "maybe_value_converted%1#0"
+      ]
+    },
+    "500": {
+      "op": "bytec_1 // 0x766f7465725f63726564697473"
+    },
+    "501": {
+      "op": "txn Sender",
+      "defined_out": [
+        "0x766f7465725f63726564697473",
+        "maybe_value_converted%1#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "maybe_value_converted%1#0",
+        "0x766f7465725f63726564697473",
+        "tmp%8#0"
+      ]
+    },
+    "503": {
+      "op": "concat",
+      "defined_out": [
+        "maybe_value_converted%1#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "maybe_value_converted%1#0",
+        "tmp%9#0"
+      ]
+    },
+    "504": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%9#0",
+        "maybe_value_converted%1#0"
+      ]
+    },
+    "505": {
+      "op": "frame_dig -1",
+      "stack_out": [
+        "tmp%9#0",
+        "maybe_value_converted%1#0",
+        "_credits#0 (copy)"
+      ]
+    },
+    "507": {
+      "op": "-",
+      "defined_out": [
+        "new_box_value%0#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%9#0",
+        "new_box_value%0#0"
+      ]
+    },
+    "508": {
+      "op": "itob",
+      "defined_out": [
+        "new_box_value%1#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%9#0",
+        "new_box_value%1#0"
+      ]
+    },
+    "509": {
+      "op": "box_put",
+      "stack_out": []
+    },
+    "510": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "_proposalId#0 (copy)"
+      ],
+      "stack_out": [
+        "_proposalId#0 (copy)"
+      ]
+    },
+    "512": {
+      "op": "itob",
+      "defined_out": [
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0"
+      ]
+    },
+    "513": {
+      "op": "bytec 4 // \"proposals\"",
+      "defined_out": [
+        "\"proposals\"",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0",
+        "\"proposals\""
+      ]
+    },
+    "515": {
+      "op": "dig 1",
+      "defined_out": [
+        "\"proposals\"",
+        "tmp%10#0",
+        "tmp%10#0 (copy)"
+      ],
+      "stack_out": [
+        "tmp%10#0",
+        "\"proposals\"",
+        "tmp%10#0 (copy)"
+      ]
+    },
+    "517": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%10#0",
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "tmp%10#0",
+        "tmp%11#0"
+      ]
+    },
+    "518": {
+      "op": "box_get",
+      "defined_out": [
+        "maybe_exists%3#0",
+        "proposal#0",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0",
+        "proposal#0",
+        "maybe_exists%3#0"
+      ]
+    },
+    "519": {
+      "op": "bury 1",
+      "stack_out": [
+        "tmp%10#0",
+        "maybe_exists%3#0"
+      ]
+    },
+    "521": {
+      "op": "assert // check self.proposals entry exists",
+      "stack_out": [
+        "tmp%10#0"
+      ]
+    },
+    "522": {
+      "op": "pushbytes 0x70726f706f73616c5f766f746573",
+      "defined_out": [
+        "0x70726f706f73616c5f766f746573",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0",
+        "0x70726f706f73616c5f766f746573"
+      ]
+    },
+    "538": {
+      "op": "swap",
+      "stack_out": [
+        "0x70726f706f73616c5f766f746573",
+        "tmp%10#0"
+      ]
+    },
+    "539": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0"
+      ]
+    },
+    "540": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%16#0",
+        "tmp%16#0 (copy)"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "tmp%16#0 (copy)"
+      ]
+    },
+    "541": {
+      "op": "box_get",
+      "defined_out": [
+        "maybe_exists%4#0",
+        "maybe_value%4#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "maybe_value%4#0",
+        "maybe_exists%4#0"
+      ]
+    },
+    "542": {
+      "op": "assert // check self.proposalVoters entry exists",
+      "stack_out": [
+        "tmp%16#0",
+        "maybe_value%4#0"
+      ]
+    },
+    "543": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "expr_value_trimmed%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "expr_value_trimmed%0#0"
+      ]
+    },
+    "546": {
+      "op": "txn Sender",
+      "defined_out": [
+        "expr_value_trimmed%0#0",
+        "tmp%16#0",
+        "tmp%17#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "expr_value_trimmed%0#0",
+        "tmp%17#0"
+      ]
+    },
+    "548": {
+      "op": "concat",
+      "defined_out": [
+        "concatenated%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concatenated%0#0"
+      ]
+    },
+    "549": {
+      "op": "dup",
+      "defined_out": [
+        "concatenated%0#0",
+        "concatenated%0#0 (copy)",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concatenated%0#0",
+        "concatenated%0#0 (copy)"
+      ]
+    },
+    "550": {
+      "op": "len",
+      "defined_out": [
+        "byte_len%0#0",
+        "concatenated%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concatenated%0#0",
+        "byte_len%0#0"
+      ]
+    },
+    "551": {
+      "op": "intc_2 // 32",
+      "defined_out": [
+        "32",
+        "byte_len%0#0",
+        "concatenated%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concatenated%0#0",
+        "byte_len%0#0",
+        "32"
+      ]
+    },
+    "552": {
+      "op": "/",
+      "defined_out": [
+        "concatenated%0#0",
+        "len_%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concatenated%0#0",
+        "len_%0#0"
+      ]
+    },
+    "553": {
+      "op": "itob",
+      "defined_out": [
+        "as_bytes%0#0",
+        "concatenated%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concatenated%0#0",
+        "as_bytes%0#0"
+      ]
+    },
+    "554": {
+      "op": "extract 6 2",
+      "defined_out": [
+        "concatenated%0#0",
+        "len_16_bit%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concatenated%0#0",
+        "len_16_bit%0#0"
+      ]
+    },
+    "557": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%16#0",
+        "len_16_bit%0#0",
+        "concatenated%0#0"
+      ]
+    },
+    "558": {
+      "op": "concat",
+      "defined_out": [
+        "concat_result%0#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concat_result%0#0"
+      ]
+    },
+    "559": {
+      "op": "dig 1",
+      "stack_out": [
+        "tmp%16#0",
+        "concat_result%0#0",
+        "tmp%16#0 (copy)"
+      ]
+    },
+    "561": {
+      "op": "box_del",
+      "defined_out": [
+        "concat_result%0#0",
+        "tmp%16#0",
+        "{box_del}"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "concat_result%0#0",
+        "{box_del}"
+      ]
+    },
+    "562": {
+      "op": "pop",
+      "stack_out": [
+        "tmp%16#0",
+        "concat_result%0#0"
+      ]
+    },
+    "563": {
+      "op": "box_put",
+      "stack_out": []
+    },
+    "564": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "565": {
+      "subroutine": "smart_contracts.strategies.qf.contract.QuadraticVoting.getProposalVotes",
+      "params": {
+        "_proposalId#0": "uint64"
+      },
+      "block": "getProposalVotes",
+      "stack_in": [],
+      "op": "proto 1 1"
+    },
+    "568": {
+      "callsub": "smart_contracts.strategies.qf.contract.QuadraticVoting.__isActive",
+      "op": "callsub __isActive"
+    },
+    "571": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "_proposalId#0 (copy)"
+      ],
+      "stack_out": [
+        "_proposalId#0 (copy)"
+      ]
+    },
+    "573": {
+      "op": "bz getProposalVotes_bool_false@3",
+      "stack_out": []
+    },
+    "576": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "577": {
+      "op": "bytec_0 // \"proposal_id_incrementer\"",
+      "defined_out": [
+        "\"proposal_id_incrementer\"",
+        "0"
+      ],
+      "stack_out": [
+        "0",
+        "\"proposal_id_incrementer\""
+      ]
+    },
+    "578": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "579": {
+      "op": "assert // check self.proposal_id_incrementer exists",
+      "stack_out": [
+        "maybe_value%0#0"
+      ]
+    },
+    "580": {
+      "op": "frame_dig -1",
+      "stack_out": [
+        "maybe_value%0#0",
+        "_proposalId#0 (copy)"
+      ]
+    },
+    "582": {
+      "op": ">=",
+      "defined_out": [
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0"
+      ]
+    },
+    "583": {
+      "op": "bz getProposalVotes_bool_false@3",
+      "stack_out": []
+    },
+    "586": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "and_result%0#0"
+      ],
+      "stack_out": [
+        "and_result%0#0"
+      ]
+    },
+    "587": {
+      "op": "b getProposalVotes_bool_merge@4"
+    },
+    "590": {
+      "block": "getProposalVotes_bool_false@3",
+      "stack_in": [],
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "and_result%0#0"
+      ],
+      "stack_out": [
+        "and_result%0#0"
+      ]
+    },
+    "591": {
+      "block": "getProposalVotes_bool_merge@4",
+      "stack_in": [
+        "and_result%0#0"
+      ],
+      "op": "assert // Invalid proposal id",
+      "defined_out": [],
+      "stack_out": []
+    },
+    "592": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "_proposalId#0 (copy)"
+      ],
+      "stack_out": [
+        "_proposalId#0 (copy)"
+      ]
+    },
+    "594": {
+      "op": "itob",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0"
+      ]
+    },
+    "595": {
+      "op": "bytec 4 // \"proposals\"",
+      "defined_out": [
+        "\"proposals\"",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0",
+        "\"proposals\""
+      ]
+    },
+    "597": {
+      "op": "swap",
+      "stack_out": [
+        "\"proposals\"",
+        "tmp%2#0"
+      ]
+    },
+    "598": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "599": {
+      "op": "box_get",
+      "defined_out": [
+        "maybe_exists%1#0",
+        "proposal#0"
+      ],
+      "stack_out": [
+        "proposal#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "600": {
+      "op": "assert // check self.proposals entry exists",
+      "stack_out": [
+        "proposal#0"
+      ]
+    },
+    "601": {
+      "op": "extract 42 8 // on error: Index access is out of bounds",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "604": {
+      "retsub": true,
+      "op": "retsub"
+    }
+  }
+}
