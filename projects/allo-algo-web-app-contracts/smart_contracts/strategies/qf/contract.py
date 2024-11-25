@@ -22,12 +22,12 @@ class QuadraticVoting(algopy.ARC4Contract):
         self.isActive = False
 
     @arc4.abimethod()
-    def initialize(self, _voters: DynamicArray[arc4.Address]) -> None:
-        self.__assertNonEmpty(_voters) 
+    def initialize(self) -> None:
+        # self.__assertNonEmpty(_voters) 
         self.isActive = True
-        for voter in _voters:
-            self.voters.append(voter)
-            self.voterCredits[voter] = algopy.UInt64(100)
+        # for voter in _voters:
+        #     self.voters.append(voter)
+        #     self.voterCredits[voter] = algopy.UInt64(100)
 
     @arc4.abimethod()
     def createProposal(self, _proposalTitle: String, _proposalDescription: String) -> None:
@@ -43,10 +43,11 @@ class QuadraticVoting(algopy.ARC4Contract):
         self.proposals[self.proposal_id_incrementer] = new_proposal.copy()
 
     @arc4.abimethod()
-    def allocateCredits(self, _amount: algopy.UInt64) -> None:
-        assert _amount > 0, "Invalid credit amount"
-        self.voterCredits[arc4.Address(algopy.op.Txn.sender)] += _amount
-        self.totalFunds += _amount
+    def allocateCredits(self, _voters: DynamicArray[arc4.Address]) -> None:
+        self.__assertNonEmpty(_voters)
+        for voter in _voters:
+            self.voters.append(voter)
+            self.voterCredits[voter] = algopy.UInt64(100)
 
     @arc4.abimethod()
     def vote(self, _proposalId: algopy.UInt64, _credits: algopy.UInt64) -> None:

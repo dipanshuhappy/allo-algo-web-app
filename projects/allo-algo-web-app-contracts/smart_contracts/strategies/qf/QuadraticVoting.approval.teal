@@ -2,7 +2,7 @@
 
 smart_contracts.strategies.qf.contract.QuadraticVoting.approval_program:
     intcblock 0 1 32
-    bytecblock "proposal_id_incrementer" 0x766f7465725f63726564697473 "totalFunds" "voters" "isActive" "proposals"
+    bytecblock "proposal_id_incrementer" 0x766f7465725f63726564697473 "voters" "isActive" "proposals"
     txn ApplicationID
     bnz main_after_if_else@2
     callsub __init__
@@ -19,12 +19,12 @@ __init__:
     proto 0 0
     // contract.py:16
     // self.totalFunds = algopy.UInt64(0)
-    bytec_2 // "totalFunds"
+    pushbytes "totalFunds"
     intc_0 // 0
     app_global_put
     // contract.py:18
     // self.voters = DynamicArray[arc4.Address]()
-    bytec_3 // "voters"
+    bytec_2 // "voters"
     pushbytes 0x0000
     app_global_put
     // contract.py:21
@@ -34,7 +34,7 @@ __init__:
     app_global_put
     // contract.py:22
     // self.isActive = False
-    bytec 4 // "isActive"
+    bytec_3 // "isActive"
     intc_0 // 0
     app_global_put
     retsub
@@ -47,7 +47,7 @@ __puya_arc4_router__:
     proto 0 1
     txn NumAppArgs
     bz __puya_arc4_router___bare_routing@9
-    pushbytess 0xca1ef5ff 0x373e6fa6 0xe4ecaff7 0xa278a8b6 0x8abfbf6f // method "initialize(address[])void", method "createProposal(string,string)void", method "allocateCredits(uint64)void", method "vote(uint64,uint64)void", method "getProposalVotes(uint64)uint64"
+    pushbytess 0xfd2c93cd 0x373e6fa6 0xc919b38a 0xa278a8b6 0x8abfbf6f // method "initialize()void", method "createProposal(string,string)void", method "allocateCredits(address[])void", method "vote(uint64,uint64)void", method "getProposalVotes(uint64)uint64"
     txna ApplicationArgs 0
     match __puya_arc4_router___initialize_route@2 __puya_arc4_router___createProposal_route@3 __puya_arc4_router___allocateCredits_route@4 __puya_arc4_router___vote_route@5 __puya_arc4_router___getProposalVotes_route@6
     intc_0 // 0
@@ -61,11 +61,6 @@ __puya_arc4_router___initialize_route@2:
     assert // OnCompletion is NoOp
     txn ApplicationID
     assert // is not creating
-    // contract.py:13
-    // class QuadraticVoting(algopy.ARC4Contract):
-    txna ApplicationArgs 1
-    // contract.py:24
-    // @arc4.abimethod()
     callsub initialize
     intc_1 // 1
     retsub
@@ -99,7 +94,6 @@ __puya_arc4_router___allocateCredits_route@4:
     // contract.py:13
     // class QuadraticVoting(algopy.ARC4Contract):
     txna ApplicationArgs 1
-    btoi
     // contract.py:45
     // @arc4.abimethod()
     callsub allocateCredits
@@ -107,7 +101,7 @@ __puya_arc4_router___allocateCredits_route@4:
     retsub
 
 __puya_arc4_router___vote_route@5:
-    // contract.py:51
+    // contract.py:52
     // @arc4.abimethod()
     txn OnCompletion
     !
@@ -120,14 +114,14 @@ __puya_arc4_router___vote_route@5:
     btoi
     txna ApplicationArgs 2
     btoi
-    // contract.py:51
+    // contract.py:52
     // @arc4.abimethod()
     callsub vote
     intc_1 // 1
     retsub
 
 __puya_arc4_router___getProposalVotes_route@6:
-    // contract.py:64
+    // contract.py:65
     // @arc4.abimethod()
     txn OnCompletion
     !
@@ -138,7 +132,7 @@ __puya_arc4_router___getProposalVotes_route@6:
     // class QuadraticVoting(algopy.ARC4Contract):
     txna ApplicationArgs 1
     btoi
-    // contract.py:64
+    // contract.py:65
     // @arc4.abimethod()
     callsub getProposalVotes
     pushbytes 0x151f7c75
@@ -166,95 +160,18 @@ __puya_arc4_router___after_if_else@13:
     retsub
 
 
-// smart_contracts.strategies.qf.contract.QuadraticVoting.initialize(_voters: bytes) -> void:
+// smart_contracts.strategies.qf.contract.QuadraticVoting.initialize() -> void:
 initialize:
     // contract.py:24-25
     // @arc4.abimethod()
-    // def initialize(self, _voters: DynamicArray[arc4.Address]) -> None:
-    proto 1 0
-    // contract.py:26
-    // self.__assertNonEmpty(_voters)
-    frame_dig -1
-    callsub __assertNonEmpty
-    frame_bury -1
-    // contract.py:27
+    // def initialize(self) -> None:
+    proto 0 0
+    // contract.py:26-27
+    // # self.__assertNonEmpty(_voters)
     // self.isActive = True
-    bytec 4 // "isActive"
+    bytec_3 // "isActive"
     intc_1 // 1
     app_global_put
-    // contract.py:28
-    // for voter in _voters:
-    frame_dig -1
-    intc_0 // 0
-    extract_uint16
-    intc_0 // 0
-
-initialize_for_header@1:
-    // contract.py:28
-    // for voter in _voters:
-    frame_dig 1
-    frame_dig 0
-    <
-    bz initialize_after_for@4
-    frame_dig -1
-    extract 2 0
-    frame_dig 1
-    dup
-    cover 2
-    intc_2 // 32
-    *
-    intc_2 // 32
-    extract3 // on error: Index access is out of bounds
-    // contract.py:29
-    // self.voters.append(voter)
-    intc_0 // 0
-    bytec_3 // "voters"
-    app_global_get_ex
-    assert // check self.voters exists
-    extract 2 0
-    dig 1
-    concat
-    dup
-    len
-    intc_2 // 32
-    /
-    itob
-    extract 6 2
-    swap
-    concat
-    bytec_3 // "voters"
-    swap
-    app_global_put
-    // contract.py:30
-    // self.voterCredits[voter] = algopy.UInt64(100)
-    bytec_1 // 0x766f7465725f63726564697473
-    swap
-    concat
-    pushint 100 // 100
-    itob
-    box_put
-    intc_1 // 1
-    +
-    frame_bury 1
-    b initialize_for_header@1
-
-initialize_after_for@4:
-    retsub
-
-
-// smart_contracts.strategies.qf.contract.QuadraticVoting.__assertNonEmpty(_array: bytes) -> bytes:
-__assertNonEmpty:
-    // contract.py:75-76
-    // @algopy.subroutine
-    // def __assertNonEmpty(self, _array: DynamicArray[arc4.Address]) -> None:
-    proto 1 1
-    // contract.py:77
-    // assert _array.length > 0, "voters array cannot be empty"
-    frame_dig -1
-    intc_0 // 0
-    extract_uint16
-    assert // voters array cannot be empty
-    frame_dig -1
     retsub
 
 
@@ -333,7 +250,7 @@ createProposal:
     app_global_get_ex
     assert // check self.proposal_id_incrementer exists
     itob
-    bytec 5 // "proposals"
+    bytec 4 // "proposals"
     swap
     concat
     dup
@@ -346,14 +263,14 @@ createProposal:
 
 // smart_contracts.strategies.qf.contract.QuadraticVoting.__isActive() -> void:
 __isActive:
-    // contract.py:71-72
+    // contract.py:72-73
     // @algopy.subroutine
     // def __isActive(self) -> None:
     proto 0 0
-    // contract.py:73
+    // contract.py:74
     // assert self.isActive == True, "Contract is not active"
     intc_0 // 0
-    bytec 4 // "isActive"
+    bytec_3 // "isActive"
     app_global_get_ex
     assert // check self.isActive exists
     intc_1 // 1
@@ -362,58 +279,103 @@ __isActive:
     retsub
 
 
-// smart_contracts.strategies.qf.contract.QuadraticVoting.allocateCredits(_amount: uint64) -> void:
+// smart_contracts.strategies.qf.contract.QuadraticVoting.allocateCredits(_voters: bytes) -> void:
 allocateCredits:
     // contract.py:45-46
     // @arc4.abimethod()
-    // def allocateCredits(self, _amount: algopy.UInt64) -> None:
+    // def allocateCredits(self, _voters: DynamicArray[arc4.Address]) -> None:
     proto 1 0
     // contract.py:47
-    // assert _amount > 0, "Invalid credit amount"
+    // self.__assertNonEmpty(_voters)
     frame_dig -1
-    assert // Invalid credit amount
+    callsub __assertNonEmpty
+    dup
+    frame_bury -1
     // contract.py:48
-    // self.voterCredits[arc4.Address(algopy.op.Txn.sender)] += _amount
-    bytec_1 // 0x766f7465725f63726564697473
-    txn Sender
-    concat
-    box_get
-    swap
-    btoi
-    swap
-    assert // check self.voterCredits entry exists
-    bytec_1 // 0x766f7465725f63726564697473
-    txn Sender
-    concat
-    swap
-    frame_dig -1
-    +
-    itob
-    box_put
-    // contract.py:49
-    // self.totalFunds += _amount
+    // for voter in _voters:
     intc_0 // 0
-    bytec_2 // "totalFunds"
-    app_global_get_ex
-    assert // check self.totalFunds exists
+    extract_uint16
+    intc_0 // 0
+
+allocateCredits_for_header@1:
+    // contract.py:48
+    // for voter in _voters:
+    frame_dig 1
+    frame_dig 0
+    <
+    bz allocateCredits_after_for@4
     frame_dig -1
-    +
-    bytec_2 // "totalFunds"
+    extract 2 0
+    frame_dig 1
+    dup
+    cover 2
+    intc_2 // 32
+    *
+    intc_2 // 32
+    extract3 // on error: Index access is out of bounds
+    // contract.py:49
+    // self.voters.append(voter)
+    intc_0 // 0
+    bytec_2 // "voters"
+    app_global_get_ex
+    assert // check self.voters exists
+    extract 2 0
+    dig 1
+    concat
+    dup
+    len
+    intc_2 // 32
+    /
+    itob
+    extract 6 2
+    swap
+    concat
+    bytec_2 // "voters"
     swap
     app_global_put
+    // contract.py:50
+    // self.voterCredits[voter] = algopy.UInt64(100)
+    bytec_1 // 0x766f7465725f63726564697473
+    swap
+    concat
+    pushint 100 // 100
+    itob
+    box_put
+    intc_1 // 1
+    +
+    frame_bury 1
+    b allocateCredits_for_header@1
+
+allocateCredits_after_for@4:
+    retsub
+
+
+// smart_contracts.strategies.qf.contract.QuadraticVoting.__assertNonEmpty(_array: bytes) -> bytes:
+__assertNonEmpty:
+    // contract.py:76-77
+    // @algopy.subroutine
+    // def __assertNonEmpty(self, _array: DynamicArray[arc4.Address]) -> None:
+    proto 1 1
+    // contract.py:78
+    // assert _array.length > 0, "voters array cannot be empty"
+    frame_dig -1
+    intc_0 // 0
+    extract_uint16
+    assert // voters array cannot be empty
+    frame_dig -1
     retsub
 
 
 // smart_contracts.strategies.qf.contract.QuadraticVoting.vote(_proposalId: uint64, _credits: uint64) -> void:
 vote:
-    // contract.py:51-52
+    // contract.py:52-53
     // @arc4.abimethod()
     // def vote(self, _proposalId: algopy.UInt64, _credits: algopy.UInt64) -> None:
     proto 2 0
-    // contract.py:53
+    // contract.py:54
     // self.__isActive()
     callsub __isActive
-    // contract.py:54
+    // contract.py:55
     // assert (_proposalId > 0 and _proposalId <= self.proposal_id_incrementer), "Invalid proposal id"
     frame_dig -2
     bz vote_bool_false@3
@@ -431,10 +393,10 @@ vote_bool_false@3:
     intc_0 // 0
 
 vote_bool_merge@4:
-    // contract.py:54
+    // contract.py:55
     // assert (_proposalId > 0 and _proposalId <= self.proposal_id_incrementer), "Invalid proposal id"
     assert // Invalid proposal id
-    // contract.py:55
+    // contract.py:56
     // voter_credits = self.voterCredits[arc4.Address(algopy.op.Txn.sender)]
     bytec_1 // 0x766f7465725f63726564697473
     txn Sender
@@ -444,16 +406,16 @@ vote_bool_merge@4:
     btoi
     swap
     assert // check self.voterCredits entry exists
-    // contract.py:56
+    // contract.py:57
     // assert voter_credits >= _credits, "Insufficient credits"
     frame_dig -1
     >=
     assert // Insufficient credits
-    // contract.py:57
+    // contract.py:58
     // assert _credits > 0, "Credits must be greater than zero"
     frame_dig -1
     assert // Credits must be greater than zero
-    // contract.py:59
+    // contract.py:60
     // self.voterCredits[arc4.Address(algopy.op.Txn.sender)] -= _credits
     bytec_1 // 0x766f7465725f63726564697473
     txn Sender
@@ -471,17 +433,17 @@ vote_bool_merge@4:
     -
     itob
     box_put
-    // contract.py:60
+    // contract.py:61
     // proposal = self.proposals[_proposalId].copy()
     frame_dig -2
     itob
-    bytec 5 // "proposals"
+    bytec 4 // "proposals"
     dig 1
     concat
     box_get
     bury 1
     assert // check self.proposals entry exists
-    // contract.py:62
+    // contract.py:63
     // self.proposalVoters[_proposalId].append(arc4.Address(algopy.op.Txn.sender))
     pushbytes 0x70726f706f73616c5f766f746573
     swap
@@ -509,14 +471,14 @@ vote_bool_merge@4:
 
 // smart_contracts.strategies.qf.contract.QuadraticVoting.getProposalVotes(_proposalId: uint64) -> bytes:
 getProposalVotes:
-    // contract.py:64-65
+    // contract.py:65-66
     // @arc4.abimethod()
     // def getProposalVotes(self, _proposalId: algopy.UInt64) -> arc4.UInt64:
     proto 1 1
-    // contract.py:66
+    // contract.py:67
     // self.__isActive()
     callsub __isActive
-    // contract.py:67
+    // contract.py:68
     // assert (_proposalId > 0 and _proposalId <= self.proposal_id_incrementer), "Invalid proposal id"
     frame_dig -1
     bz getProposalVotes_bool_false@3
@@ -534,19 +496,19 @@ getProposalVotes_bool_false@3:
     intc_0 // 0
 
 getProposalVotes_bool_merge@4:
-    // contract.py:67
+    // contract.py:68
     // assert (_proposalId > 0 and _proposalId <= self.proposal_id_incrementer), "Invalid proposal id"
     assert // Invalid proposal id
-    // contract.py:68
+    // contract.py:69
     // proposal = self.proposals[_proposalId].copy()
     frame_dig -1
     itob
-    bytec 5 // "proposals"
+    bytec 4 // "proposals"
     swap
     concat
     box_get
     assert // check self.proposals entry exists
-    // contract.py:69
+    // contract.py:70
     // return proposal.proposalVotes
     extract 42 8 // on error: Index access is out of bounds
     retsub
