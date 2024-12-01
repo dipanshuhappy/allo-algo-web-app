@@ -31,17 +31,7 @@ import type { ABIResult, TransactionWithSigner } from 'algosdk'
 import { Algodv2, OnApplicationComplete, Transaction, AtomicTransactionComposer, modelsv2 } from 'algosdk'
 export const APP_SPEC: AppSpec = {
   "hints": {
-    "getAccountNonce(account)uint64": {
-      "call_config": {
-        "no_op": "CALL"
-      }
-    },
-    "incrementAccountNonce(account)void": {
-      "call_config": {
-        "no_op": "CALL"
-      }
-    },
-    "getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])": {
+    "getProfileById(uint512)(uint256,string,string,address,uint64[],address[])": {
       "call_config": {
         "no_op": "CALL"
       },
@@ -51,11 +41,7 @@ export const APP_SPEC: AppSpec = {
           "elements": [
             [
               "id",
-              "byte[]"
-            ],
-            [
-              "nonce",
-              "uint64"
+              "uint256"
             ],
             [
               "name",
@@ -70,8 +56,8 @@ export const APP_SPEC: AppSpec = {
               "address"
             ],
             [
-              "anchor",
-              "uint64"
+              "anchors",
+              "uint64[]"
             ],
             [
               "members",
@@ -81,89 +67,44 @@ export const APP_SPEC: AppSpec = {
         }
       }
     },
-    "getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])": {
-      "call_config": {
-        "no_op": "CALL"
-      },
-      "structs": {
-        "output": {
-          "name": "Profile",
-          "elements": [
-            [
-              "id",
-              "byte[]"
-            ],
-            [
-              "nonce",
-              "uint64"
-            ],
-            [
-              "name",
-              "string"
-            ],
-            [
-              "metadata",
-              "string"
-            ],
-            [
-              "owner",
-              "address"
-            ],
-            [
-              "anchor",
-              "uint64"
-            ],
-            [
-              "members",
-              "address[]"
-            ]
-          ]
-        }
-      }
-    },
-    "getProfileId(uint256,string,string)byte[]": {
+    "getAnchors(uint512)uint64[]": {
       "call_config": {
         "no_op": "CALL"
       }
     },
-    "addAnchorToProfileId(uint64,byte[])void": {
+    "getMembers(uint512)address[]": {
       "call_config": {
         "no_op": "CALL"
       }
     },
-    "createProfile(byte[],string,string)uint64": {
+    "getProfileName(uint512)string": {
       "call_config": {
         "no_op": "CALL"
       }
     },
-    "addMember(byte[],address)void": {
+    "getProfileMetadata(uint512)string": {
       "call_config": {
         "no_op": "CALL"
       }
     },
-    "updateProfileName(byte[],string)void": {
+    "addMember(uint512,address)void": {
       "call_config": {
         "no_op": "CALL"
       }
     },
-    "updateProfileMetadata(byte[],string)void": {
-      "call_config": {
-        "no_op": "CALL"
-      }
-    },
-    "isOwnerOrMemberOfProfile(byte[],address)bool": {
+    "createProfile(string,string)uint64": {
       "call_config": {
         "no_op": "CALL"
       }
     }
   },
   "source": {
-    "approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMucmVnaXN0cnkuY29udHJhY3QuUmVnaXN0cnkuYXBwcm92YWxfcHJvZ3JhbToKICAgIGludGNibG9jayAxIDAgNTQgMzIKICAgIGJ5dGVjYmxvY2sgInByb2ZpbGVzQnlJZCIgMHgxNTFmN2M3NSAibm9uY2UiICJhbmNob3JUb1Byb2ZpbGVJZCIKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBibnogbWFpbl9hZnRlcl9pZl9lbHNlQDIKICAgIGNhbGxzdWIgX19pbml0X18KCm1haW5fYWZ0ZXJfaWZfZWxzZUAyOgogICAgY2FsbHN1YiBfX3B1eWFfYXJjNF9yb3V0ZXJfXwogICAgcmV0dXJuCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5Ll9faW5pdF9fKCkgLT4gdm9pZDoKX19pbml0X186CiAgICBwcm90byAwIDAKICAgIHB1c2hieXRlc3MgInZlcnNpb24iIDB4MDEgLy8gInZlcnNpb24iLCAweDAxCiAgICBhcHBfZ2xvYmFsX3B1dAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5Ll9fcHV5YV9hcmM0X3JvdXRlcl9fKCkgLT4gdWludDY0OgpfX3B1eWFfYXJjNF9yb3V0ZXJfXzoKICAgIHByb3RvIDAgMQogICAgdHhuIE51bUFwcEFyZ3MKICAgIGJ6IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2JhcmVfcm91dGluZ0AxNQogICAgcHVzaGJ5dGVzcyAweDU4NmUwNzZlIDB4M2ZiYjVmNjAgMHg0MTcxYzM3MSAweDc2ZTRlN2E4IDB4YWE4ZDFmYTIgMHhkNzk0MWIyYyAweDgzZWM2OTNmIDB4NGY3NGU5ZjcgMHhkZGI2MTY1OCAweDQxZmNjOTU1IDB4YWI1NTJjYTUgLy8gbWV0aG9kICJnZXRBY2NvdW50Tm9uY2UoYWNjb3VudCl1aW50NjQiLCBtZXRob2QgImluY3JlbWVudEFjY291bnROb25jZShhY2NvdW50KXZvaWQiLCBtZXRob2QgImdldFByb2ZpbGVCeUlkKGJ5dGVbXSkoYnl0ZVtdLHVpbnQ2NCxzdHJpbmcsc3RyaW5nLGFkZHJlc3MsdWludDY0LGFkZHJlc3NbXSkiLCBtZXRob2QgImdldFByb2ZpbGVCeUFuY2hvcih1aW50NjQpKGJ5dGVbXSx1aW50NjQsc3RyaW5nLHN0cmluZyxhZGRyZXNzLHVpbnQ2NCxhZGRyZXNzW10pIiwgbWV0aG9kICJnZXRQcm9maWxlSWQodWludDI1NixzdHJpbmcsc3RyaW5nKWJ5dGVbXSIsIG1ldGhvZCAiYWRkQW5jaG9yVG9Qcm9maWxlSWQodWludDY0LGJ5dGVbXSl2b2lkIiwgbWV0aG9kICJjcmVhdGVQcm9maWxlKGJ5dGVbXSxzdHJpbmcsc3RyaW5nKXVpbnQ2NCIsIG1ldGhvZCAiYWRkTWVtYmVyKGJ5dGVbXSxhZGRyZXNzKXZvaWQiLCBtZXRob2QgInVwZGF0ZVByb2ZpbGVOYW1lKGJ5dGVbXSxzdHJpbmcpdm9pZCIsIG1ldGhvZCAidXBkYXRlUHJvZmlsZU1ldGFkYXRhKGJ5dGVbXSxzdHJpbmcpdm9pZCIsIG1ldGhvZCAiaXNPd25lck9yTWVtYmVyT2ZQcm9maWxlKGJ5dGVbXSxhZGRyZXNzKWJvb2wiCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAwCiAgICBtYXRjaCBfX3B1eWFfYXJjNF9yb3V0ZXJfX19nZXRBY2NvdW50Tm9uY2Vfcm91dGVAMiBfX3B1eWFfYXJjNF9yb3V0ZXJfX19pbmNyZW1lbnRBY2NvdW50Tm9uY2Vfcm91dGVAMyBfX3B1eWFfYXJjNF9yb3V0ZXJfX19nZXRQcm9maWxlQnlJZF9yb3V0ZUA0IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldFByb2ZpbGVCeUFuY2hvcl9yb3V0ZUA1IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldFByb2ZpbGVJZF9yb3V0ZUA2IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2FkZEFuY2hvclRvUHJvZmlsZUlkX3JvdXRlQDcgX19wdXlhX2FyYzRfcm91dGVyX19fY3JlYXRlUHJvZmlsZV9yb3V0ZUA4IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2FkZE1lbWJlcl9yb3V0ZUA5IF9fcHV5YV9hcmM0X3JvdXRlcl9fX3VwZGF0ZVByb2ZpbGVOYW1lX3JvdXRlQDEwIF9fcHV5YV9hcmM0X3JvdXRlcl9fX3VwZGF0ZVByb2ZpbGVNZXRhZGF0YV9yb3V0ZUAxMSBfX3B1eWFfYXJjNF9yb3V0ZXJfX19pc093bmVyT3JNZW1iZXJPZlByb2ZpbGVfcm91dGVAMTIKICAgIGludGNfMSAvLyAwCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldEFjY291bnROb25jZV9yb3V0ZUAyOgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICBidG9pCiAgICB0eG5hcyBBY2NvdW50cwogICAgY2FsbHN1YiBnZXRBY2NvdW50Tm9uY2UKICAgIGl0b2IKICAgIGJ5dGVjXzEgLy8gMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2luY3JlbWVudEFjY291bnROb25jZV9yb3V0ZUAzOgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICBidG9pCiAgICB0eG5hcyBBY2NvdW50cwogICAgY2FsbHN1YiBpbmNyZW1lbnRBY2NvdW50Tm9uY2UKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldFByb2ZpbGVCeUlkX3JvdXRlQDQ6CiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGV4dHJhY3QgMiAwCiAgICBjYWxsc3ViIGdldFByb2ZpbGVCeUlkCiAgICBieXRlY18xIC8vIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19nZXRQcm9maWxlQnlBbmNob3Jfcm91dGVANToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgYnRvaQogICAgY2FsbHN1YiBnZXRQcm9maWxlQnlBbmNob3IKICAgIGJ5dGVjXzEgLy8gMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldFByb2ZpbGVJZF9yb3V0ZUA2OgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAyCiAgICBleHRyYWN0IDIgMAogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMwogICAgZXh0cmFjdCAyIDAKICAgIGNhbGxzdWIgZ2V0UHJvZmlsZUlkCiAgICBkdXAKICAgIGxlbgogICAgaXRvYgogICAgZXh0cmFjdCA2IDIKICAgIHN3YXAKICAgIGNvbmNhdAogICAgYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fYWRkQW5jaG9yVG9Qcm9maWxlSWRfcm91dGVANzoKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgYnRvaQogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgogICAgZXh0cmFjdCAyIDAKICAgIGNhbGxzdWIgYWRkQW5jaG9yVG9Qcm9maWxlSWQKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2NyZWF0ZVByb2ZpbGVfcm91dGVAODoKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgZXh0cmFjdCAyIDAKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGV4dHJhY3QgMiAwCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAzCiAgICBleHRyYWN0IDIgMAogICAgY2FsbHN1YiBjcmVhdGVQcm9maWxlCiAgICBpdG9iCiAgICBieXRlY18xIC8vIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZGRNZW1iZXJfcm91dGVAOToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgZXh0cmFjdCAyIDAKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGNhbGxzdWIgYWRkTWVtYmVyCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX191cGRhdGVQcm9maWxlTmFtZV9yb3V0ZUAxMDoKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgZXh0cmFjdCAyIDAKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGNhbGxzdWIgdXBkYXRlUHJvZmlsZU5hbWUKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX3VwZGF0ZVByb2ZpbGVNZXRhZGF0YV9yb3V0ZUAxMToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgZXh0cmFjdCAyIDAKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGNhbGxzdWIgdXBkYXRlUHJvZmlsZU1ldGFkYXRhCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19pc093bmVyT3JNZW1iZXJPZlByb2ZpbGVfcm91dGVAMTI6CiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGV4dHJhY3QgMiAwCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAyCiAgICBjYWxsc3ViIGlzT3duZXJPck1lbWJlck9mUHJvZmlsZQogICAgcHVzaGJ5dGVzIDB4MDAKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDIKICAgIHNldGJpdAogICAgYnl0ZWNfMSAvLyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fYmFyZV9yb3V0aW5nQDE1OgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgYm56IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2FmdGVyX2lmX2Vsc2VAMTkKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICAhCiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIGNyZWF0aW5nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZnRlcl9pZl9lbHNlQDE5OgogICAgaW50Y18xIC8vIDAKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5nZXRBY2NvdW50Tm9uY2UoYWNjb3VudDogYnl0ZXMpIC0+IHVpbnQ2NDoKZ2V0QWNjb3VudE5vbmNlOgogICAgcHJvdG8gMSAxCiAgICBieXRlY18yIC8vICJub25jZSIKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBib3hfZ2V0CiAgICBzd2FwCiAgICBidG9pCiAgICBzd2FwCiAgICBhc3NlcnQgLy8gY2hlY2sgc2VsZi5ub25jZSBlbnRyeSBleGlzdHMKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5pbmNyZW1lbnRBY2NvdW50Tm9uY2UoYWNjb3VudDogYnl0ZXMpIC0+IHZvaWQ6CmluY3JlbWVudEFjY291bnROb25jZToKICAgIHByb3RvIDEgMAogICAgYnl0ZWNfMiAvLyAibm9uY2UiCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgZHVwCiAgICBib3hfZ2V0CiAgICBzd2FwCiAgICBidG9pCiAgICBjb3ZlciAyCiAgICBieiBpbmNyZW1lbnRBY2NvdW50Tm9uY2VfZWxzZV9ib2R5QDIKICAgIGZyYW1lX2RpZyAwCiAgICBpbnRjXzAgLy8gMQogICAgKwogICAgaXRvYgogICAgYm94X3B1dAogICAgYiBpbmNyZW1lbnRBY2NvdW50Tm9uY2VfYWZ0ZXJfaWZfZWxzZUAzCgppbmNyZW1lbnRBY2NvdW50Tm9uY2VfZWxzZV9ib2R5QDI6CiAgICBpbnRjXzAgLy8gMQogICAgaXRvYgogICAgYm94X3B1dAoKaW5jcmVtZW50QWNjb3VudE5vbmNlX2FmdGVyX2lmX2Vsc2VAMzoKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5nZXRQcm9maWxlQnlJZChpZDogYnl0ZXMpIC0+IGJ5dGVzOgpnZXRQcm9maWxlQnlJZDoKICAgIHByb3RvIDEgMQogICAgYnl0ZWNfMCAvLyAicHJvZmlsZXNCeUlkIgogICAgZnJhbWVfZGlnIC0xCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnByb2ZpbGVzQnlJZCBlbnRyeSBleGlzdHMKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5nZXRQcm9maWxlQnlBbmNob3IoYW5jaG9yOiB1aW50NjQpIC0+IGJ5dGVzOgpnZXRQcm9maWxlQnlBbmNob3I6CiAgICBwcm90byAxIDEKICAgIGZyYW1lX2RpZyAtMQogICAgaXRvYgogICAgYnl0ZWNfMyAvLyAiYW5jaG9yVG9Qcm9maWxlSWQiCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmFuY2hvclRvUHJvZmlsZUlkIGVudHJ5IGV4aXN0cwogICAgYnl0ZWNfMCAvLyAicHJvZmlsZXNCeUlkIgogICAgc3dhcAogICAgY29uY2F0CiAgICBib3hfZ2V0CiAgICBhc3NlcnQgLy8gY2hlY2sgc2VsZi5wcm9maWxlc0J5SWQgZW50cnkgZXhpc3RzCiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMucmVnaXN0cnkuY29udHJhY3QuUmVnaXN0cnkuZ2V0UHJvZmlsZUlkKG5vbmNlOiBieXRlcywgbmFtZTogYnl0ZXMsIG1ldGFkYXRhOiBieXRlcykgLT4gYnl0ZXM6CmdldFByb2ZpbGVJZDoKICAgIHByb3RvIDMgMQogICAgZnJhbWVfZGlnIC0zCiAgICB0eG4gU2VuZGVyCiAgICBjb25jYXQKICAgIHNoYTI1NgogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5LmFkZEFuY2hvclRvUHJvZmlsZUlkKGFuY2hvcjogdWludDY0LCBwcm9maWxlSWQ6IGJ5dGVzKSAtPiB2b2lkOgphZGRBbmNob3JUb1Byb2ZpbGVJZDoKICAgIHByb3RvIDIgMAogICAgYnl0ZWNfMCAvLyAicHJvZmlsZXNCeUlkIgogICAgZnJhbWVfZGlnIC0xCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnByb2ZpbGVzQnlJZCBlbnRyeSBleGlzdHMKICAgIGV4dHJhY3QgNDYgOCAvLyBvbiBlcnJvcjogSW5kZXggYWNjZXNzIGlzIG91dCBvZiBib3VuZHMKICAgIGZyYW1lX2RpZyAtMgogICAgaXRvYgogICAgc3dhcAogICAgZGlnIDEKICAgIGI9PQogICAgYXNzZXJ0IC8vIFByb2ZpbGUgaGFzIGEgZGlmZmVyZW50IGFuY2hvcgogICAgYnl0ZWNfMyAvLyAiYW5jaG9yVG9Qcm9maWxlSWQiCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGR1cAogICAgYm94X2RlbAogICAgcG9wCiAgICBmcmFtZV9kaWcgLTEKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5jcmVhdGVQcm9maWxlKGlkOiBieXRlcywgbmFtZTogYnl0ZXMsIG1ldGFkYXRhOiBieXRlcykgLT4gdWludDY0OgpjcmVhdGVQcm9maWxlOgogICAgcHJvdG8gMyAxCiAgICB0eG4gU2VuZGVyCiAgICBjYWxsc3ViIGdldEFjY291bnROb25jZQogICAgaXR4bl9iZWdpbgogICAgaW50Y18wIC8vIDEKICAgIGl0eG5fZmllbGQgR2xvYmFsTnVtQnl0ZVNsaWNlCiAgICBwdXNoYnl0ZXMgYmFzZTY0KENvRUJRdz09KQogICAgaXR4bl9maWVsZCBDbGVhclN0YXRlUHJvZ3JhbVBhZ2VzCiAgICBwdXNoYnl0ZXMgYmFzZTY0KENpQUVBUURvQndRbUFRVnZkMjVsY2pFWVFBQURpQUFFaUFBSlE0b0FBQ2d5QTJlSmlnQUJNUnRCQUpxQ0JRU0ZTbEdOQk5mblI0RUVPOWZPTEFRUDJaaHdCQ2dtc2dJMkdnQ09CUUFDQUJRQUxBQkNBRjRqaVRFWkZFUXhHRVEyR2dFWHdCeUlBR3NpaVRFWkZFUXhHRVEyR2dFWHdCdzJHZ0lYd0RLSUFHTWlpVEVaRkVReEdFUTJHZ0VYd0J3MkdnSVhpQUJ1SW9reEdSUkVNUmhFTmhvQkY4QWNOaG9DRjhBd05ob0RGNGdBZFNLSk1Sa1VSREVZUkRZYUFSZkFNSWdBZmlLSk1SbEFBQVl4R0JSRUlva2ppWW9CQUNNb1pVUXlBeEpFS0l2L1o0bUtBZ0FqS0dWRU1nTVNSQ2lML21leE1nQWlzaG1MLzdJWWdRYXlFTElCczRtS0FnQ0lBQkd4aS8reUNJditzZ2Npc2hBa3NnR3ppWW9BQUNNb1pVUXhBQkpFaVlvREFJai83ckdMLzdJU2kvNnlFWXY5c2hRbHNoQWtzZ0d6aVlvQkFJai8wN0V4QUNPeUVvdi9zaEd5RkNXeUVDU3lBYk9KKQogICAgaXR4bl9maWVsZCBBcHByb3ZhbFByb2dyYW1QYWdlcwogICAgcHVzaGludCA2IC8vIGFwcGwKICAgIGl0eG5fZmllbGQgVHlwZUVudW0KICAgIHB1c2hpbnQgMjAwMCAvLyAyMDAwCiAgICBpdHhuX2ZpZWxkIEZlZQogICAgaXR4bl9zdWJtaXQKICAgIGl0eG4gQ3JlYXRlZEFwcGxpY2F0aW9uSUQKICAgIHN3YXAKICAgIGl0b2IKICAgIHR4biBTZW5kZXIKICAgIGRpZyAyCiAgICBpdG9iCiAgICBmcmFtZV9kaWcgLTMKICAgIGxlbgogICAgcHVzaGludCA1NiAvLyA1NgogICAgKwogICAgcHVzaGJ5dGVzIDB4MDAzOAogICAgdW5jb3ZlciA0CiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgY29uY2F0CiAgICBmcmFtZV9kaWcgLTIKICAgIGxlbgogICAgdW5jb3ZlciAyCiAgICArCiAgICBkdXAKICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICB1bmNvdmVyIDIKICAgIHN3YXAKICAgIGNvbmNhdAogICAgZnJhbWVfZGlnIC0xCiAgICBsZW4KICAgIHVuY292ZXIgMgogICAgKwogICAgc3dhcAogICAgdW5jb3ZlciAzCiAgICBjb25jYXQKICAgIHVuY292ZXIgMgogICAgY29uY2F0CiAgICBzd2FwCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgY29uY2F0CiAgICBmcmFtZV9kaWcgLTMKICAgIGNvbmNhdAogICAgZnJhbWVfZGlnIC0yCiAgICBjb25jYXQKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBwdXNoYnl0ZXMgYmFzZTMyKEFBQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUEpCiAgICBjb25jYXQKICAgIGJ5dGVjXzAgLy8gInByb2ZpbGVzQnlJZCIKICAgIGZyYW1lX2RpZyAtMwogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9kZWwKICAgIHBvcAogICAgc3dhcAogICAgYm94X3B1dAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5LmFkZE1lbWJlcihwcm9maWxlSWQ6IGJ5dGVzLCBtZW1iZXI6IGJ5dGVzKSAtPiB2b2lkOgphZGRNZW1iZXI6CiAgICBwcm90byAyIDAKICAgIGJ5dGVjXzAgLy8gInByb2ZpbGVzQnlJZCIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnByb2ZpbGVzQnlJZCBlbnRyeSBleGlzdHMKICAgIGR1cAogICAgaW50Y18yIC8vIDU0CiAgICBleHRyYWN0X3VpbnQxNgogICAgZGlnIDEKICAgIGxlbgogICAgZGlnIDIKICAgIGRpZyAyCiAgICB1bmNvdmVyIDIKICAgIHN1YnN0cmluZzMKICAgIGV4dHJhY3QgMiAwCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgZHVwCiAgICBsZW4KICAgIGludGNfMyAvLyAzMgogICAgLwogICAgaXRvYgogICAgZXh0cmFjdCA2IDIKICAgIHN3YXAKICAgIGNvbmNhdAogICAgdW5jb3ZlciAyCiAgICBpbnRjXzEgLy8gMAogICAgdW5jb3ZlciAzCiAgICBleHRyYWN0MwogICAgc3dhcAogICAgY29uY2F0CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBib3hfcHV0CiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMucmVnaXN0cnkuY29udHJhY3QuUmVnaXN0cnkudXBkYXRlUHJvZmlsZU5hbWUocHJvZmlsZUlkOiBieXRlcywgbmFtZTogYnl0ZXMpIC0+IHZvaWQ6CnVwZGF0ZVByb2ZpbGVOYW1lOgogICAgcHJvdG8gMiAwCiAgICBmcmFtZV9kaWcgLTIKICAgIGNhbGxzdWIgX29ubHlQcm9maWxlT3duZXIKICAgIGJ5dGVjXzAgLy8gInByb2ZpbGVzQnlJZCIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnByb2ZpbGVzQnlJZCBlbnRyeSBleGlzdHMKICAgIGR1cAogICAgcHVzaGludCAxMCAvLyAxMAogICAgZXh0cmFjdF91aW50MTYKICAgIGRpZyAxCiAgICBpbnRjXzEgLy8gMAogICAgZGlnIDIKICAgIGV4dHJhY3QzCiAgICBkaWcgMgogICAgcHVzaGludCAxMiAvLyAxMgogICAgZXh0cmFjdF91aW50MTYKICAgIGRpZyAzCiAgICBsZW4KICAgIHVuY292ZXIgNAogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgdW5jb3ZlciAyCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgc3dhcAogICAgY29uY2F0CiAgICBzd2FwCiAgICB1bmNvdmVyIDIKICAgIC0KICAgIGZyYW1lX2RpZyAtMQogICAgbGVuCiAgICBkaWcgMgogICAgcHVzaGludCAxMiAvLyAxMgogICAgZXh0cmFjdF91aW50MTYKICAgIGRpZyAxCiAgICArCiAgICBkaWcgMgogICAgLQogICAgaXRvYgogICAgZXh0cmFjdCA2IDIKICAgIHVuY292ZXIgMwogICAgc3dhcAogICAgcmVwbGFjZTIgMTIKICAgIGR1cAogICAgaW50Y18yIC8vIDU0CiAgICBleHRyYWN0X3VpbnQxNgogICAgdW5jb3ZlciAyCiAgICArCiAgICB1bmNvdmVyIDIKICAgIC0KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICByZXBsYWNlMiA1NAogICAgZGlnIDEKICAgIGJveF9kZWwKICAgIHBvcAogICAgYm94X3B1dAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5Ll9vbmx5UHJvZmlsZU93bmVyKHByb2ZpbGVJZDogYnl0ZXMpIC0+IHZvaWQ6Cl9vbmx5UHJvZmlsZU93bmVyOgogICAgcHJvdG8gMSAwCiAgICBieXRlY18wIC8vICJwcm9maWxlc0J5SWQiCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgYm94X2dldAogICAgYXNzZXJ0IC8vIGNoZWNrIHNlbGYucHJvZmlsZXNCeUlkIGVudHJ5IGV4aXN0cwogICAgZXh0cmFjdCAxNCAzMiAvLyBvbiBlcnJvcjogSW5kZXggYWNjZXNzIGlzIG91dCBvZiBib3VuZHMKICAgIHR4biBTZW5kZXIKICAgID09CiAgICBhc3NlcnQgLy8gT25seSB0aGUgb3duZXIgb2YgdGhlIHByb2ZpbGUgY2FuIGNhbGwgdGhpcyBmdW5jdGlvbgogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5LnVwZGF0ZVByb2ZpbGVNZXRhZGF0YShwcm9maWxlSWQ6IGJ5dGVzLCBtZXRhZGF0YTogYnl0ZXMpIC0+IHZvaWQ6CnVwZGF0ZVByb2ZpbGVNZXRhZGF0YToKICAgIHByb3RvIDIgMAogICAgZnJhbWVfZGlnIC0yCiAgICBjYWxsc3ViIF9vbmx5UHJvZmlsZU93bmVyCiAgICBieXRlY18wIC8vICJwcm9maWxlc0J5SWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGNvbmNhdAogICAgZHVwCiAgICBib3hfZ2V0CiAgICBhc3NlcnQgLy8gY2hlY2sgc2VsZi5wcm9maWxlc0J5SWQgZW50cnkgZXhpc3RzCiAgICBkdXAKICAgIHB1c2hpbnQgMTIgLy8gMTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgaW50Y18xIC8vIDAKICAgIGRpZyAyCiAgICBleHRyYWN0MwogICAgZGlnIDIKICAgIGludGNfMiAvLyA1NAogICAgZXh0cmFjdF91aW50MTYKICAgIGRpZyAzCiAgICBsZW4KICAgIHVuY292ZXIgNAogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgdW5jb3ZlciAyCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgc3dhcAogICAgY29uY2F0CiAgICBzd2FwCiAgICB1bmNvdmVyIDIKICAgIC0KICAgIGZyYW1lX2RpZyAtMQogICAgbGVuCiAgICBkaWcgMgogICAgaW50Y18yIC8vIDU0CiAgICBleHRyYWN0X3VpbnQxNgogICAgKwogICAgc3dhcAogICAgLQogICAgaXRvYgogICAgZXh0cmFjdCA2IDIKICAgIHJlcGxhY2UyIDU0CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBib3hfcHV0CiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMucmVnaXN0cnkuY29udHJhY3QuUmVnaXN0cnkuaXNPd25lck9yTWVtYmVyT2ZQcm9maWxlKHByb2ZpbGVJZDogYnl0ZXMsIGFkZHJlc3M6IGJ5dGVzKSAtPiB1aW50NjQ6CmlzT3duZXJPck1lbWJlck9mUHJvZmlsZToKICAgIHByb3RvIDIgMQogICAgcHVzaGJ5dGVzICIiCiAgICBieXRlY18wIC8vICJwcm9maWxlc0J5SWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGNvbmNhdAogICAgYm94X2dldAogICAgc3dhcAogICAgZHVwCiAgICB1bmNvdmVyIDIKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnByb2ZpbGVzQnlJZCBlbnRyeSBleGlzdHMKICAgIGR1cAogICAgaW50Y18yIC8vIDU0CiAgICBleHRyYWN0X3VpbnQxNgogICAgZGlnIDEKICAgIGxlbgogICAgc3Vic3RyaW5nMwogICAgZHVwCiAgICBpbnRjXzEgLy8gMAogICAgc3dhcAogICAgaW50Y18xIC8vIDAKICAgIGV4dHJhY3RfdWludDE2CiAgICBpbnRjXzEgLy8gMAoKaXNPd25lck9yTWVtYmVyT2ZQcm9maWxlX2Zvcl9oZWFkZXJAMToKICAgIGZyYW1lX2RpZyA1CiAgICBmcmFtZV9kaWcgNAogICAgPAogICAgZnJhbWVfZGlnIDMKICAgIGZyYW1lX2J1cnkgMAogICAgYnogaXNPd25lck9yTWVtYmVyT2ZQcm9maWxlX2FmdGVyX2ZvckA2CiAgICBmcmFtZV9kaWcgMgogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyA1CiAgICBpbnRjXzMgLy8gMzIKICAgICoKICAgIGludGNfMyAvLyAzMgogICAgZXh0cmFjdDMgLy8gb24gZXJyb3I6IEluZGV4IGFjY2VzcyBpcyBvdXQgb2YgYm91bmRzCiAgICBmcmFtZV9kaWcgLTEKICAgID09CiAgICBieiBpc093bmVyT3JNZW1iZXJPZlByb2ZpbGVfYWZ0ZXJfaWZfZWxzZUA0CiAgICBpbnRjXzAgLy8gMQogICAgZnJhbWVfYnVyeSAwCiAgICBiIGlzT3duZXJPck1lbWJlck9mUHJvZmlsZV9hZnRlcl9mb3JANgoKaXNPd25lck9yTWVtYmVyT2ZQcm9maWxlX2FmdGVyX2lmX2Vsc2VANDoKICAgIGZyYW1lX2RpZyA1CiAgICBpbnRjXzAgLy8gMQogICAgKwogICAgZnJhbWVfYnVyeSA1CiAgICBiIGlzT3duZXJPck1lbWJlck9mUHJvZmlsZV9mb3JfaGVhZGVyQDEKCmlzT3duZXJPck1lbWJlck9mUHJvZmlsZV9hZnRlcl9mb3JANjoKICAgIGZyYW1lX2RpZyAwCiAgICBmcmFtZV9kaWcgMQogICAgZXh0cmFjdCAxNCAzMiAvLyBvbiBlcnJvcjogSW5kZXggYWNjZXNzIGlzIG91dCBvZiBib3VuZHMKICAgIGZyYW1lX2RpZyAtMQogICAgPT0KICAgIHx8CiAgICBmcmFtZV9idXJ5IDAKICAgIHJldHN1Ygo=",
+    "approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMucmVnaXN0cnkuY29udHJhY3QuUmVnaXN0cnkuYXBwcm92YWxfcHJvZ3JhbToKICAgIGludGNibG9jayAxIDAgNzAgNjgKICAgIGJ5dGVjYmxvY2sgMHgxNTFmN2M3NSAicHJvZmlsZXNCeUlkIiAiaW5kZXgiCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYm56IG1haW5fYWZ0ZXJfaWZfZWxzZUAyCiAgICBjYWxsc3ViIF9faW5pdF9fCgptYWluX2FmdGVyX2lmX2Vsc2VAMjoKICAgIGNhbGxzdWIgX19wdXlhX2FyYzRfcm91dGVyX18KICAgIHJldHVybgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5fX2luaXRfXygpIC0+IHZvaWQ6Cl9faW5pdF9fOgogICAgcHJvdG8gMCAwCiAgICBwdXNoYnl0ZXNzICJ2ZXJzaW9uIiAweDAxIC8vICJ2ZXJzaW9uIiwgMHgwMQogICAgYXBwX2dsb2JhbF9wdXQKICAgIGJ5dGVjXzIgLy8gImluZGV4IgogICAgcHVzaGJ5dGVzIDB4CiAgICBhcHBfZ2xvYmFsX3B1dAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5Ll9fcHV5YV9hcmM0X3JvdXRlcl9fKCkgLT4gdWludDY0OgpfX3B1eWFfYXJjNF9yb3V0ZXJfXzoKICAgIHByb3RvIDAgMQogICAgdHhuIE51bUFwcEFyZ3MKICAgIGJ6IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2JhcmVfcm91dGluZ0AxMQogICAgcHVzaGJ5dGVzcyAweDE0ZTQzMTc3IDB4YTVjZmNjODEgMHhmNDM4NDg0OCAweDZiYzFiMmY4IDB4Y2M3MDMxMTcgMHhkMjg1Yzk2MyAweDJmYjFkM2IwIC8vIG1ldGhvZCAiZ2V0UHJvZmlsZUJ5SWQodWludDUxMikodWludDI1NixzdHJpbmcsc3RyaW5nLGFkZHJlc3MsdWludDY0W10sYWRkcmVzc1tdKSIsIG1ldGhvZCAiZ2V0QW5jaG9ycyh1aW50NTEyKXVpbnQ2NFtdIiwgbWV0aG9kICJnZXRNZW1iZXJzKHVpbnQ1MTIpYWRkcmVzc1tdIiwgbWV0aG9kICJnZXRQcm9maWxlTmFtZSh1aW50NTEyKXN0cmluZyIsIG1ldGhvZCAiZ2V0UHJvZmlsZU1ldGFkYXRhKHVpbnQ1MTIpc3RyaW5nIiwgbWV0aG9kICJhZGRNZW1iZXIodWludDUxMixhZGRyZXNzKXZvaWQiLCBtZXRob2QgImNyZWF0ZVByb2ZpbGUoc3RyaW5nLHN0cmluZyl1aW50NjQiCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAwCiAgICBtYXRjaCBfX3B1eWFfYXJjNF9yb3V0ZXJfX19nZXRQcm9maWxlQnlJZF9yb3V0ZUAyIF9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldEFuY2hvcnNfcm91dGVAMyBfX3B1eWFfYXJjNF9yb3V0ZXJfX19nZXRNZW1iZXJzX3JvdXRlQDQgX19wdXlhX2FyYzRfcm91dGVyX19fZ2V0UHJvZmlsZU5hbWVfcm91dGVANSBfX3B1eWFfYXJjNF9yb3V0ZXJfX19nZXRQcm9maWxlTWV0YWRhdGFfcm91dGVANiBfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZGRNZW1iZXJfcm91dGVANyBfX3B1eWFfYXJjNF9yb3V0ZXJfX19jcmVhdGVQcm9maWxlX3JvdXRlQDgKICAgIGludGNfMSAvLyAwCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldFByb2ZpbGVCeUlkX3JvdXRlQDI6CiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGNhbGxzdWIgZ2V0UHJvZmlsZUJ5SWQKICAgIGJ5dGVjXzAgLy8gMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldEFuY2hvcnNfcm91dGVAMzoKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgY2FsbHN1YiBnZXRBbmNob3JzCiAgICBieXRlY18wIC8vIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19nZXRNZW1iZXJzX3JvdXRlQDQ6CiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGNhbGxzdWIgZ2V0TWVtYmVycwogICAgYnl0ZWNfMCAvLyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fZ2V0UHJvZmlsZU5hbWVfcm91dGVANToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgY2FsbHN1YiBnZXRQcm9maWxlTmFtZQogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGJ5dGVjXzAgLy8gMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2dldFByb2ZpbGVNZXRhZGF0YV9yb3V0ZUA2OgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICBjYWxsc3ViIGdldFByb2ZpbGVNZXRhZGF0YQogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGJ5dGVjXzAgLy8gMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2FkZE1lbWJlcl9yb3V0ZUA3OgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAyCiAgICBjYWxsc3ViIGFkZE1lbWJlcgogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fY3JlYXRlUHJvZmlsZV9yb3V0ZUA4OgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICBleHRyYWN0IDIgMAogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgogICAgZXh0cmFjdCAyIDAKICAgIGNhbGxzdWIgY3JlYXRlUHJvZmlsZQogICAgaXRvYgogICAgYnl0ZWNfMCAvLyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fYmFyZV9yb3V0aW5nQDExOgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgYm56IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2FmdGVyX2lmX2Vsc2VAMTUKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICAhCiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIGNyZWF0aW5nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZnRlcl9pZl9lbHNlQDE1OgogICAgaW50Y18xIC8vIDAKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5nZXRQcm9maWxlQnlJZChpZDogYnl0ZXMpIC0+IGJ5dGVzOgpnZXRQcm9maWxlQnlJZDoKICAgIHByb3RvIDEgMQogICAgYnl0ZWNfMSAvLyAicHJvZmlsZXNCeUlkIgogICAgZnJhbWVfZGlnIC0xCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnByb2ZpbGVzQnlJZCBlbnRyeSBleGlzdHMKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5nZXRBbmNob3JzKHByb2ZpbGVJZDogYnl0ZXMpIC0+IGJ5dGVzOgpnZXRBbmNob3JzOgogICAgcHJvdG8gMSAxCiAgICBieXRlY18xIC8vICJwcm9maWxlc0J5SWQiCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgYm94X2dldAogICAgYXNzZXJ0IC8vIGNoZWNrIHNlbGYucHJvZmlsZXNCeUlkIGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBpbnRjXzMgLy8gNjgKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgaW50Y18yIC8vIDcwCiAgICBleHRyYWN0X3VpbnQxNgogICAgc3Vic3RyaW5nMwogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5LmdldE1lbWJlcnMocHJvZmlsZUlkOiBieXRlcykgLT4gYnl0ZXM6CmdldE1lbWJlcnM6CiAgICBwcm90byAxIDEKICAgIGJ5dGVjXzEgLy8gInByb2ZpbGVzQnlJZCIKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBib3hfZ2V0CiAgICBhc3NlcnQgLy8gY2hlY2sgc2VsZi5wcm9maWxlc0J5SWQgZW50cnkgZXhpc3RzCiAgICBkdXAKICAgIGludGNfMiAvLyA3MAogICAgZXh0cmFjdF91aW50MTYKICAgIGRpZyAxCiAgICBsZW4KICAgIHN1YnN0cmluZzMKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5yZWdpc3RyeS5jb250cmFjdC5SZWdpc3RyeS5nZXRQcm9maWxlTmFtZShwcm9maWxlSWQ6IGJ5dGVzKSAtPiBieXRlczoKZ2V0UHJvZmlsZU5hbWU6CiAgICBwcm90byAxIDEKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBnZXRQcm9maWxlQnlJZAogICAgZHVwCiAgICBwdXNoaW50IDMyIC8vIDMyCiAgICBleHRyYWN0X3VpbnQxNgogICAgZGlnIDEKICAgIHB1c2hpbnQgMzQgLy8gMzQKICAgIGV4dHJhY3RfdWludDE2CiAgICBzdWJzdHJpbmczCiAgICBleHRyYWN0IDIgMAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5LmdldFByb2ZpbGVNZXRhZGF0YShwcm9maWxlSWQ6IGJ5dGVzKSAtPiBieXRlczoKZ2V0UHJvZmlsZU1ldGFkYXRhOgogICAgcHJvdG8gMSAxCiAgICBmcmFtZV9kaWcgLTEKICAgIGNhbGxzdWIgZ2V0UHJvZmlsZUJ5SWQKICAgIGR1cAogICAgcHVzaGludCAzNCAvLyAzNAogICAgZXh0cmFjdF91aW50MTYKICAgIGRpZyAxCiAgICBpbnRjXzMgLy8gNjgKICAgIGV4dHJhY3RfdWludDE2CiAgICBzdWJzdHJpbmczCiAgICBleHRyYWN0IDIgMAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5LmFkZE1lbWJlcihwcm9maWxlSWQ6IGJ5dGVzLCBtZW1iZXI6IGJ5dGVzKSAtPiB2b2lkOgphZGRNZW1iZXI6CiAgICBwcm90byAyIDAKICAgIGJ5dGVjXzEgLy8gInByb2ZpbGVzQnlJZCIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnByb2ZpbGVzQnlJZCBlbnRyeSBleGlzdHMKICAgIGR1cAogICAgaW50Y18yIC8vIDcwCiAgICBleHRyYWN0X3VpbnQxNgogICAgZGlnIDEKICAgIGxlbgogICAgZGlnIDIKICAgIGRpZyAyCiAgICB1bmNvdmVyIDIKICAgIHN1YnN0cmluZzMKICAgIGV4dHJhY3QgMiAwCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgZHVwCiAgICBsZW4KICAgIHB1c2hpbnQgMzIgLy8gMzIKICAgIC8KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIHVuY292ZXIgMgogICAgaW50Y18xIC8vIDAKICAgIHVuY292ZXIgMwogICAgZXh0cmFjdDMKICAgIHN3YXAKICAgIGNvbmNhdAogICAgZGlnIDEKICAgIGJveF9kZWwKICAgIHBvcAogICAgYm94X3B1dAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLnJlZ2lzdHJ5LmNvbnRyYWN0LlJlZ2lzdHJ5LmNyZWF0ZVByb2ZpbGUobmFtZTogYnl0ZXMsIG1ldGFkYXRhOiBieXRlcykgLT4gdWludDY0OgpjcmVhdGVQcm9maWxlOgogICAgcHJvdG8gMiAxCiAgICBpbnRjXzEgLy8gMAogICAgYnl0ZWNfMiAvLyAiaW5kZXgiCiAgICBhcHBfZ2xvYmFsX2dldF9leAogICAgYXNzZXJ0IC8vIGNoZWNrIHNlbGYuaW5kZXggZXhpc3RzCiAgICBpdHhuX2JlZ2luCiAgICBpbnRjXzAgLy8gMQogICAgaXR4bl9maWVsZCBHbG9iYWxOdW1CeXRlU2xpY2UKICAgIHB1c2hieXRlcyBiYXNlNjQoQ29FQlF3PT0pCiAgICBpdHhuX2ZpZWxkIENsZWFyU3RhdGVQcm9ncmFtUGFnZXMKICAgIHB1c2hieXRlcyBiYXNlNjQoQ2lBRUFRRG9Cd1FtQVFWdmQyNWxjakVZUUFBRGlBQUVpQUFKUTRvQUFDZ3lBMmVKaWdBQk1SdEJBSnFDQlFTRlNsR05CTmZuUjRFRU85Zk9MQVFQMlpod0JDZ21zZ0kyR2dDT0JRQUNBQlFBTEFCQ0FGNGppVEVaRkVReEdFUTJHZ0VYd0J5SUFHc2lpVEVaRkVReEdFUTJHZ0VYd0J3MkdnSVh3REtJQUdNaWlURVpGRVF4R0VRMkdnRVh3QncyR2dJWGlBQnVJb2t4R1JSRU1SaEVOaG9CRjhBY05ob0NGOEF3TmhvREY0Z0FkU0tKTVJrVVJERVlSRFlhQVJmQU1JZ0FmaUtKTVJsQUFBWXhHQlJFSW9ramlZb0JBQ01vWlVReUF4SkVLSXYvWjRtS0FnQWpLR1ZFTWdNU1JDaUwvbWV4TWdBaXNobUwvN0lZZ1FheUVMSUJzNG1LQWdDSUFCR3hpLyt5Q0l2K3NnY2lzaEFrc2dHemlZb0FBQ01vWlVReEFCSkVpWW9EQUlqLzdyR0wvN0lTaS82eUVZdjlzaFFsc2hBa3NnR3ppWW9CQUlqLzA3RXhBQ095RW92L3NoR3lGQ1d5RUNTeUFiT0opCiAgICBpdHhuX2ZpZWxkIEFwcHJvdmFsUHJvZ3JhbVBhZ2VzCiAgICBwdXNoaW50IDYgLy8gYXBwbAogICAgaXR4bl9maWVsZCBUeXBlRW51bQogICAgcHVzaGludCAyMDAwIC8vIDIwMDAKICAgIGl0eG5fZmllbGQgRmVlCiAgICBpdHhuX3N1Ym1pdAogICAgaXR4biBDcmVhdGVkQXBwbGljYXRpb25JRAogICAgZHVwCiAgICBpdG9iCiAgICBkdXAKICAgIGxlbgogICAgcHVzaGludCA4IC8vIDgKICAgIC8KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIHR4biBTZW5kZXIKICAgIGRpZyAzCiAgICBwdXNoYnl0ZXMgMHgwMDQ4CiAgICBjb25jYXQKICAgIGZyYW1lX2RpZyAtMgogICAgbGVuCiAgICBwdXNoaW50IDcyIC8vIDcyCiAgICArCiAgICBkdXAKICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICB1bmNvdmVyIDIKICAgIHN3YXAKICAgIGNvbmNhdAogICAgZnJhbWVfZGlnIC0xCiAgICBsZW4KICAgIHVuY292ZXIgMgogICAgKwogICAgc3dhcAogICAgdW5jb3ZlciAyCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgY29uY2F0CiAgICBkaWcgMgogICAgbGVuCiAgICB1bmNvdmVyIDIKICAgICsKICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBjb25jYXQKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgc3dhcAogICAgY29uY2F0CiAgICBwdXNoYnl0ZXMgYmFzZTMyKEFBQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUEpCiAgICBjb25jYXQKICAgIGJ5dGVjXzEgLy8gInByb2ZpbGVzQnlJZCIKICAgIHVuY292ZXIgMwogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9kZWwKICAgIHBvcAogICAgc3dhcAogICAgYm94X3B1dAogICAgcmV0c3ViCg==",
     "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMucmVnaXN0cnkuY29udHJhY3QuUmVnaXN0cnkuY2xlYXJfc3RhdGVfcHJvZ3JhbToKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4K"
   },
   "state": {
     "global": {
-      "num_byte_slices": 1,
+      "num_byte_slices": 2,
       "num_uints": 0
     },
     "local": {
@@ -174,6 +115,10 @@ export const APP_SPEC: AppSpec = {
   "schema": {
     "global": {
       "declared": {
+        "index": {
+          "type": "bytes",
+          "key": "index"
+        },
         "version": {
           "type": "bytes",
           "key": "version"
@@ -190,121 +135,75 @@ export const APP_SPEC: AppSpec = {
     "name": "Registry",
     "methods": [
       {
-        "name": "getAccountNonce",
-        "args": [
-          {
-            "type": "account",
-            "name": "account"
-          }
-        ],
-        "readonly": false,
-        "returns": {
-          "type": "uint64"
-        }
-      },
-      {
-        "name": "incrementAccountNonce",
-        "args": [
-          {
-            "type": "account",
-            "name": "account"
-          }
-        ],
-        "readonly": false,
-        "returns": {
-          "type": "void"
-        }
-      },
-      {
         "name": "getProfileById",
         "args": [
           {
-            "type": "byte[]",
+            "type": "uint512",
             "name": "id"
           }
         ],
         "readonly": false,
         "returns": {
-          "type": "(byte[],uint64,string,string,address,uint64,address[])"
+          "type": "(uint256,string,string,address,uint64[],address[])"
         }
       },
       {
-        "name": "getProfileByAnchor",
+        "name": "getAnchors",
         "args": [
           {
-            "type": "uint64",
-            "name": "anchor"
-          }
-        ],
-        "readonly": false,
-        "returns": {
-          "type": "(byte[],uint64,string,string,address,uint64,address[])"
-        }
-      },
-      {
-        "name": "getProfileId",
-        "args": [
-          {
-            "type": "uint256",
-            "name": "nonce"
-          },
-          {
-            "type": "string",
-            "name": "name"
-          },
-          {
-            "type": "string",
-            "name": "metadata"
-          }
-        ],
-        "readonly": false,
-        "returns": {
-          "type": "byte[]"
-        }
-      },
-      {
-        "name": "addAnchorToProfileId",
-        "args": [
-          {
-            "type": "uint64",
-            "name": "anchor"
-          },
-          {
-            "type": "byte[]",
+            "type": "uint512",
             "name": "profileId"
           }
         ],
         "readonly": false,
         "returns": {
-          "type": "void"
+          "type": "uint64[]"
         }
       },
       {
-        "name": "createProfile",
+        "name": "getMembers",
         "args": [
           {
-            "type": "byte[]",
-            "name": "id"
-          },
-          {
-            "type": "string",
-            "name": "name"
-          },
-          {
-            "type": "string",
-            "name": "metadata"
+            "type": "uint512",
+            "name": "profileId"
           }
         ],
         "readonly": false,
         "returns": {
-          "type": "uint64"
+          "type": "address[]"
+        }
+      },
+      {
+        "name": "getProfileName",
+        "args": [
+          {
+            "type": "uint512",
+            "name": "profileId"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "getProfileMetadata",
+        "args": [
+          {
+            "type": "uint512",
+            "name": "profileId"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "string"
         }
       },
       {
         "name": "addMember",
         "args": [
           {
-            "type": "byte[]",
+            "type": "uint512",
             "name": "profileId"
           },
           {
@@ -318,28 +217,11 @@ export const APP_SPEC: AppSpec = {
         }
       },
       {
-        "name": "updateProfileName",
+        "name": "createProfile",
         "args": [
-          {
-            "type": "byte[]",
-            "name": "profileId"
-          },
           {
             "type": "string",
             "name": "name"
-          }
-        ],
-        "readonly": false,
-        "returns": {
-          "type": "void"
-        }
-      },
-      {
-        "name": "updateProfileMetadata",
-        "args": [
-          {
-            "type": "byte[]",
-            "name": "profileId"
           },
           {
             "type": "string",
@@ -348,24 +230,7 @@ export const APP_SPEC: AppSpec = {
         ],
         "readonly": false,
         "returns": {
-          "type": "void"
-        }
-      },
-      {
-        "name": "isOwnerOrMemberOfProfile",
-        "args": [
-          {
-            "type": "byte[]",
-            "name": "profileId"
-          },
-          {
-            "type": "address",
-            "name": "address"
-          }
-        ],
-        "readonly": false,
-        "returns": {
-          "type": "bool"
+          "type": "uint64"
         }
       }
     ],
@@ -446,97 +311,63 @@ export type Registry = {
    * Maps method signatures / names to their argument and return types.
    */
   methods:
-    & Record<'getAccountNonce(account)uint64' | 'getAccountNonce', {
+    & Record<'getProfileById(uint512)(uint256,string,string,address,uint64[],address[])' | 'getProfileById', {
       argsObj: {
-        account: string | Uint8Array
+        id: bigint | number
       }
-      argsTuple: [account: string | Uint8Array]
-      returns: bigint
-    }>
-    & Record<'incrementAccountNonce(account)void' | 'incrementAccountNonce', {
-      argsObj: {
-        account: string | Uint8Array
-      }
-      argsTuple: [account: string | Uint8Array]
-      returns: void
-    }>
-    & Record<'getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])' | 'getProfileById', {
-      argsObj: {
-        id: Uint8Array
-      }
-      argsTuple: [id: Uint8Array]
+      argsTuple: [id: bigint | number]
       returns: Profile
     }>
-    & Record<'getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])' | 'getProfileByAnchor', {
+    & Record<'getAnchors(uint512)uint64[]' | 'getAnchors', {
       argsObj: {
-        anchor: bigint | number
+        profileId: bigint | number
       }
-      argsTuple: [anchor: bigint | number]
-      returns: Profile
+      argsTuple: [profileId: bigint | number]
+      returns: bigint[]
     }>
-    & Record<'getProfileId(uint256,string,string)byte[]' | 'getProfileId', {
+    & Record<'getMembers(uint512)address[]' | 'getMembers', {
       argsObj: {
-        nonce: bigint | number
-        name: string
-        metadata: string
+        profileId: bigint | number
       }
-      argsTuple: [nonce: bigint | number, name: string, metadata: string]
-      returns: Uint8Array
+      argsTuple: [profileId: bigint | number]
+      returns: string[]
     }>
-    & Record<'addAnchorToProfileId(uint64,byte[])void' | 'addAnchorToProfileId', {
+    & Record<'getProfileName(uint512)string' | 'getProfileName', {
       argsObj: {
-        anchor: bigint | number
-        profileId: Uint8Array
+        profileId: bigint | number
       }
-      argsTuple: [anchor: bigint | number, profileId: Uint8Array]
-      returns: void
+      argsTuple: [profileId: bigint | number]
+      returns: string
     }>
-    & Record<'createProfile(byte[],string,string)uint64' | 'createProfile', {
+    & Record<'getProfileMetadata(uint512)string' | 'getProfileMetadata', {
       argsObj: {
-        id: Uint8Array
-        name: string
-        metadata: string
+        profileId: bigint | number
       }
-      argsTuple: [id: Uint8Array, name: string, metadata: string]
-      returns: bigint
+      argsTuple: [profileId: bigint | number]
+      returns: string
     }>
-    & Record<'addMember(byte[],address)void' | 'addMember', {
+    & Record<'addMember(uint512,address)void' | 'addMember', {
       argsObj: {
-        profileId: Uint8Array
+        profileId: bigint | number
         member: string
       }
-      argsTuple: [profileId: Uint8Array, member: string]
+      argsTuple: [profileId: bigint | number, member: string]
       returns: void
     }>
-    & Record<'updateProfileName(byte[],string)void' | 'updateProfileName', {
+    & Record<'createProfile(string,string)uint64' | 'createProfile', {
       argsObj: {
-        profileId: Uint8Array
         name: string
-      }
-      argsTuple: [profileId: Uint8Array, name: string]
-      returns: void
-    }>
-    & Record<'updateProfileMetadata(byte[],string)void' | 'updateProfileMetadata', {
-      argsObj: {
-        profileId: Uint8Array
         metadata: string
       }
-      argsTuple: [profileId: Uint8Array, metadata: string]
-      returns: void
-    }>
-    & Record<'isOwnerOrMemberOfProfile(byte[],address)bool' | 'isOwnerOrMemberOfProfile', {
-      argsObj: {
-        profileId: Uint8Array
-        address: string
-      }
-      argsTuple: [profileId: Uint8Array, address: string]
-      returns: boolean
+      argsTuple: [name: string, metadata: string]
+      returns: bigint
     }>
   /**
    * Defines the shape of the global and local state of the application.
    */
   state: {
     global: {
+      index?: BinaryState
       version?: BinaryState
     }
   }
@@ -560,25 +391,23 @@ export type BareCallArgs = Omit<RawAppCallArgs, keyof CoreAppCallArgs>
  * Represents a Profile result as a struct
  */
 export type Profile = {
-  id: Uint8Array
-  nonce: bigint
+  id: bigint
   name: string
   metadata: string
   owner: string
-  anchor: bigint
+  anchors: bigint[]
   members: string[]
 }
 /**
  * Converts the tuple representation of a Profile to the struct representation
  */
-export function Profile([id, nonce, name, metadata, owner, anchor, members]: [Uint8Array, bigint, string, string, string, bigint, string[]] ) {
+export function Profile([id, name, metadata, owner, anchors, members]: [bigint, string, string, string, bigint[], string[]] ) {
   return {
     id,
-    nonce,
     name,
     metadata,
     owner,
-    anchor,
+    anchors,
     members,
   }
 }
@@ -638,156 +467,100 @@ export abstract class RegistryCallFactory {
   }
 
   /**
-   * Constructs a no op call for the getAccountNonce(account)uint64 ABI method
+   * Constructs a no op call for the getProfileById(uint512)(uint256,string,string,address,uint64[],address[]) ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static getAccountNonce(args: MethodArgs<'getAccountNonce(account)uint64'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static getProfileById(args: MethodArgs<'getProfileById(uint512)(uint256,string,string,address,uint64[],address[])'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'getAccountNonce(account)uint64' as const,
-      methodArgs: Array.isArray(args) ? args : [args.account],
-      ...params,
-    }
-  }
-  /**
-   * Constructs a no op call for the incrementAccountNonce(account)void ABI method
-   *
-   * @param args Any args for the contract call
-   * @param params Any additional parameters for the call
-   * @returns A TypedCallParams object for the call
-   */
-  static incrementAccountNonce(args: MethodArgs<'incrementAccountNonce(account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
-    return {
-      method: 'incrementAccountNonce(account)void' as const,
-      methodArgs: Array.isArray(args) ? args : [args.account],
-      ...params,
-    }
-  }
-  /**
-   * Constructs a no op call for the getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[]) ABI method
-   *
-   * @param args Any args for the contract call
-   * @param params Any additional parameters for the call
-   * @returns A TypedCallParams object for the call
-   */
-  static getProfileById(args: MethodArgs<'getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
-    return {
-      method: 'getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])' as const,
+      method: 'getProfileById(uint512)(uint256,string,string,address,uint64[],address[])' as const,
       methodArgs: Array.isArray(args) ? args : [args.id],
       ...params,
     }
   }
   /**
-   * Constructs a no op call for the getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[]) ABI method
+   * Constructs a no op call for the getAnchors(uint512)uint64[] ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static getProfileByAnchor(args: MethodArgs<'getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static getAnchors(args: MethodArgs<'getAnchors(uint512)uint64[]'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])' as const,
-      methodArgs: Array.isArray(args) ? args : [args.anchor],
+      method: 'getAnchors(uint512)uint64[]' as const,
+      methodArgs: Array.isArray(args) ? args : [args.profileId],
       ...params,
     }
   }
   /**
-   * Constructs a no op call for the getProfileId(uint256,string,string)byte[] ABI method
+   * Constructs a no op call for the getMembers(uint512)address[] ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static getProfileId(args: MethodArgs<'getProfileId(uint256,string,string)byte[]'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static getMembers(args: MethodArgs<'getMembers(uint512)address[]'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'getProfileId(uint256,string,string)byte[]' as const,
-      methodArgs: Array.isArray(args) ? args : [args.nonce, args.name, args.metadata],
+      method: 'getMembers(uint512)address[]' as const,
+      methodArgs: Array.isArray(args) ? args : [args.profileId],
       ...params,
     }
   }
   /**
-   * Constructs a no op call for the addAnchorToProfileId(uint64,byte[])void ABI method
+   * Constructs a no op call for the getProfileName(uint512)string ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static addAnchorToProfileId(args: MethodArgs<'addAnchorToProfileId(uint64,byte[])void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static getProfileName(args: MethodArgs<'getProfileName(uint512)string'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'addAnchorToProfileId(uint64,byte[])void' as const,
-      methodArgs: Array.isArray(args) ? args : [args.anchor, args.profileId],
+      method: 'getProfileName(uint512)string' as const,
+      methodArgs: Array.isArray(args) ? args : [args.profileId],
       ...params,
     }
   }
   /**
-   * Constructs a no op call for the createProfile(byte[],string,string)uint64 ABI method
+   * Constructs a no op call for the getProfileMetadata(uint512)string ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static createProfile(args: MethodArgs<'createProfile(byte[],string,string)uint64'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static getProfileMetadata(args: MethodArgs<'getProfileMetadata(uint512)string'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'createProfile(byte[],string,string)uint64' as const,
-      methodArgs: Array.isArray(args) ? args : [args.id, args.name, args.metadata],
+      method: 'getProfileMetadata(uint512)string' as const,
+      methodArgs: Array.isArray(args) ? args : [args.profileId],
       ...params,
     }
   }
   /**
-   * Constructs a no op call for the addMember(byte[],address)void ABI method
+   * Constructs a no op call for the addMember(uint512,address)void ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static addMember(args: MethodArgs<'addMember(byte[],address)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static addMember(args: MethodArgs<'addMember(uint512,address)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'addMember(byte[],address)void' as const,
+      method: 'addMember(uint512,address)void' as const,
       methodArgs: Array.isArray(args) ? args : [args.profileId, args.member],
       ...params,
     }
   }
   /**
-   * Constructs a no op call for the updateProfileName(byte[],string)void ABI method
+   * Constructs a no op call for the createProfile(string,string)uint64 ABI method
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static updateProfileName(args: MethodArgs<'updateProfileName(byte[],string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static createProfile(args: MethodArgs<'createProfile(string,string)uint64'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'updateProfileName(byte[],string)void' as const,
-      methodArgs: Array.isArray(args) ? args : [args.profileId, args.name],
-      ...params,
-    }
-  }
-  /**
-   * Constructs a no op call for the updateProfileMetadata(byte[],string)void ABI method
-   *
-   * @param args Any args for the contract call
-   * @param params Any additional parameters for the call
-   * @returns A TypedCallParams object for the call
-   */
-  static updateProfileMetadata(args: MethodArgs<'updateProfileMetadata(byte[],string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
-    return {
-      method: 'updateProfileMetadata(byte[],string)void' as const,
-      methodArgs: Array.isArray(args) ? args : [args.profileId, args.metadata],
-      ...params,
-    }
-  }
-  /**
-   * Constructs a no op call for the isOwnerOrMemberOfProfile(byte[],address)bool ABI method
-   *
-   * @param args Any args for the contract call
-   * @param params Any additional parameters for the call
-   * @returns A TypedCallParams object for the call
-   */
-  static isOwnerOrMemberOfProfile(args: MethodArgs<'isOwnerOrMemberOfProfile(byte[],address)bool'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
-    return {
-      method: 'isOwnerOrMemberOfProfile(byte[],address)bool' as const,
-      methodArgs: Array.isArray(args) ? args : [args.profileId, args.address],
+      method: 'createProfile(string,string)uint64' as const,
+      methodArgs: Array.isArray(args) ? args : [args.name, args.metadata],
       ...params,
     }
   }
@@ -890,124 +663,80 @@ export class RegistryClient {
   }
 
   /**
-   * Calls the getAccountNonce(account)uint64 ABI method.
+   * Calls the getProfileById(uint512)(uint256,string,string,address,uint64[],address[]) ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public getAccountNonce(args: MethodArgs<'getAccountNonce(account)uint64'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.getAccountNonce(args, params))
-  }
-
-  /**
-   * Calls the incrementAccountNonce(account)void ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The result of the call
-   */
-  public incrementAccountNonce(args: MethodArgs<'incrementAccountNonce(account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.incrementAccountNonce(args, params))
-  }
-
-  /**
-   * Calls the getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[]) ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The result of the call
-   */
-  public getProfileById(args: MethodArgs<'getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+  public getProfileById(args: MethodArgs<'getProfileById(uint512)(uint256,string,string,address,uint64[],address[])'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
     return this.call(RegistryCallFactory.getProfileById(args, params), Profile)
   }
 
   /**
-   * Calls the getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[]) ABI method.
+   * Calls the getAnchors(uint512)uint64[] ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public getProfileByAnchor(args: MethodArgs<'getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.getProfileByAnchor(args, params), Profile)
+  public getAnchors(args: MethodArgs<'getAnchors(uint512)uint64[]'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(RegistryCallFactory.getAnchors(args, params))
   }
 
   /**
-   * Calls the getProfileId(uint256,string,string)byte[] ABI method.
+   * Calls the getMembers(uint512)address[] ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public getProfileId(args: MethodArgs<'getProfileId(uint256,string,string)byte[]'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.getProfileId(args, params))
+  public getMembers(args: MethodArgs<'getMembers(uint512)address[]'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(RegistryCallFactory.getMembers(args, params))
   }
 
   /**
-   * Calls the addAnchorToProfileId(uint64,byte[])void ABI method.
+   * Calls the getProfileName(uint512)string ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public addAnchorToProfileId(args: MethodArgs<'addAnchorToProfileId(uint64,byte[])void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.addAnchorToProfileId(args, params))
+  public getProfileName(args: MethodArgs<'getProfileName(uint512)string'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(RegistryCallFactory.getProfileName(args, params))
   }
 
   /**
-   * Calls the createProfile(byte[],string,string)uint64 ABI method.
+   * Calls the getProfileMetadata(uint512)string ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public createProfile(args: MethodArgs<'createProfile(byte[],string,string)uint64'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.createProfile(args, params))
+  public getProfileMetadata(args: MethodArgs<'getProfileMetadata(uint512)string'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(RegistryCallFactory.getProfileMetadata(args, params))
   }
 
   /**
-   * Calls the addMember(byte[],address)void ABI method.
+   * Calls the addMember(uint512,address)void ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public addMember(args: MethodArgs<'addMember(byte[],address)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+  public addMember(args: MethodArgs<'addMember(uint512,address)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
     return this.call(RegistryCallFactory.addMember(args, params))
   }
 
   /**
-   * Calls the updateProfileName(byte[],string)void ABI method.
+   * Calls the createProfile(string,string)uint64 ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public updateProfileName(args: MethodArgs<'updateProfileName(byte[],string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.updateProfileName(args, params))
-  }
-
-  /**
-   * Calls the updateProfileMetadata(byte[],string)void ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The result of the call
-   */
-  public updateProfileMetadata(args: MethodArgs<'updateProfileMetadata(byte[],string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.updateProfileMetadata(args, params))
-  }
-
-  /**
-   * Calls the isOwnerOrMemberOfProfile(byte[],address)bool ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The result of the call
-   */
-  public isOwnerOrMemberOfProfile(args: MethodArgs<'isOwnerOrMemberOfProfile(byte[],address)bool'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(RegistryCallFactory.isOwnerOrMemberOfProfile(args, params))
+  public createProfile(args: MethodArgs<'createProfile(string,string)uint64'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(RegistryCallFactory.createProfile(args, params))
   }
 
   /**
@@ -1060,6 +789,9 @@ export class RegistryClient {
   public async getGlobalState(): Promise<Registry['state']['global']> {
     const state = await this.appClient.getGlobalState()
     return {
+      get index() {
+        return RegistryClient.getBinaryState(state, 'index')
+      },
       get version() {
         return RegistryClient.getBinaryState(state, 'version')
       },
@@ -1072,58 +804,38 @@ export class RegistryClient {
     let promiseChain:Promise<unknown> = Promise.resolve()
     const resultMappers: Array<undefined | ((x: any) => any)> = []
     return {
-      getAccountNonce(args: MethodArgs<'getAccountNonce(account)uint64'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.getAccountNonce(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
-        resultMappers.push(undefined)
-        return this
-      },
-      incrementAccountNonce(args: MethodArgs<'incrementAccountNonce(account)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.incrementAccountNonce(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
-        resultMappers.push(undefined)
-        return this
-      },
-      getProfileById(args: MethodArgs<'getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+      getProfileById(args: MethodArgs<'getProfileById(uint512)(uint256,string,string,address,uint64[],address[])'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
         promiseChain = promiseChain.then(() => client.getProfileById(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(Profile)
         return this
       },
-      getProfileByAnchor(args: MethodArgs<'getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.getProfileByAnchor(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
-        resultMappers.push(Profile)
-        return this
-      },
-      getProfileId(args: MethodArgs<'getProfileId(uint256,string,string)byte[]'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.getProfileId(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+      getAnchors(args: MethodArgs<'getAnchors(uint512)uint64[]'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.getAnchors(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(undefined)
         return this
       },
-      addAnchorToProfileId(args: MethodArgs<'addAnchorToProfileId(uint64,byte[])void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.addAnchorToProfileId(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+      getMembers(args: MethodArgs<'getMembers(uint512)address[]'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.getMembers(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(undefined)
         return this
       },
-      createProfile(args: MethodArgs<'createProfile(byte[],string,string)uint64'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.createProfile(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+      getProfileName(args: MethodArgs<'getProfileName(uint512)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.getProfileName(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(undefined)
         return this
       },
-      addMember(args: MethodArgs<'addMember(byte[],address)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+      getProfileMetadata(args: MethodArgs<'getProfileMetadata(uint512)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.getProfileMetadata(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      addMember(args: MethodArgs<'addMember(uint512,address)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
         promiseChain = promiseChain.then(() => client.addMember(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(undefined)
         return this
       },
-      updateProfileName(args: MethodArgs<'updateProfileName(byte[],string)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.updateProfileName(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
-        resultMappers.push(undefined)
-        return this
-      },
-      updateProfileMetadata(args: MethodArgs<'updateProfileMetadata(byte[],string)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.updateProfileMetadata(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
-        resultMappers.push(undefined)
-        return this
-      },
-      isOwnerOrMemberOfProfile(args: MethodArgs<'isOwnerOrMemberOfProfile(byte[],address)bool'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.isOwnerOrMemberOfProfile(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+      createProfile(args: MethodArgs<'createProfile(string,string)uint64'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.createProfile(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(undefined)
         return this
       },
@@ -1161,103 +873,67 @@ export class RegistryClient {
 }
 export type RegistryComposer<TReturns extends [...any[]] = []> = {
   /**
-   * Calls the getAccountNonce(account)uint64 ABI method.
+   * Calls the getProfileById(uint512)(uint256,string,string,address,uint64[],address[]) ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  getAccountNonce(args: MethodArgs<'getAccountNonce(account)uint64'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getAccountNonce(account)uint64'>]>
+  getProfileById(args: MethodArgs<'getProfileById(uint512)(uint256,string,string,address,uint64[],address[])'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getProfileById(uint512)(uint256,string,string,address,uint64[],address[])'>]>
 
   /**
-   * Calls the incrementAccountNonce(account)void ABI method.
+   * Calls the getAnchors(uint512)uint64[] ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  incrementAccountNonce(args: MethodArgs<'incrementAccountNonce(account)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'incrementAccountNonce(account)void'>]>
+  getAnchors(args: MethodArgs<'getAnchors(uint512)uint64[]'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getAnchors(uint512)uint64[]'>]>
 
   /**
-   * Calls the getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[]) ABI method.
+   * Calls the getMembers(uint512)address[] ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  getProfileById(args: MethodArgs<'getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getProfileById(byte[])(byte[],uint64,string,string,address,uint64,address[])'>]>
+  getMembers(args: MethodArgs<'getMembers(uint512)address[]'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getMembers(uint512)address[]'>]>
 
   /**
-   * Calls the getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[]) ABI method.
+   * Calls the getProfileName(uint512)string ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  getProfileByAnchor(args: MethodArgs<'getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getProfileByAnchor(uint64)(byte[],uint64,string,string,address,uint64,address[])'>]>
+  getProfileName(args: MethodArgs<'getProfileName(uint512)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getProfileName(uint512)string'>]>
 
   /**
-   * Calls the getProfileId(uint256,string,string)byte[] ABI method.
+   * Calls the getProfileMetadata(uint512)string ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  getProfileId(args: MethodArgs<'getProfileId(uint256,string,string)byte[]'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getProfileId(uint256,string,string)byte[]'>]>
+  getProfileMetadata(args: MethodArgs<'getProfileMetadata(uint512)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'getProfileMetadata(uint512)string'>]>
 
   /**
-   * Calls the addAnchorToProfileId(uint64,byte[])void ABI method.
+   * Calls the addMember(uint512,address)void ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  addAnchorToProfileId(args: MethodArgs<'addAnchorToProfileId(uint64,byte[])void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'addAnchorToProfileId(uint64,byte[])void'>]>
+  addMember(args: MethodArgs<'addMember(uint512,address)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'addMember(uint512,address)void'>]>
 
   /**
-   * Calls the createProfile(byte[],string,string)uint64 ABI method.
+   * Calls the createProfile(string,string)uint64 ABI method.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  createProfile(args: MethodArgs<'createProfile(byte[],string,string)uint64'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'createProfile(byte[],string,string)uint64'>]>
-
-  /**
-   * Calls the addMember(byte[],address)void ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
-   */
-  addMember(args: MethodArgs<'addMember(byte[],address)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'addMember(byte[],address)void'>]>
-
-  /**
-   * Calls the updateProfileName(byte[],string)void ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
-   */
-  updateProfileName(args: MethodArgs<'updateProfileName(byte[],string)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'updateProfileName(byte[],string)void'>]>
-
-  /**
-   * Calls the updateProfileMetadata(byte[],string)void ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
-   */
-  updateProfileMetadata(args: MethodArgs<'updateProfileMetadata(byte[],string)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'updateProfileMetadata(byte[],string)void'>]>
-
-  /**
-   * Calls the isOwnerOrMemberOfProfile(byte[],address)bool ABI method.
-   *
-   * @param args The arguments for the contract call
-   * @param params Any additional parameters for the call
-   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
-   */
-  isOwnerOrMemberOfProfile(args: MethodArgs<'isOwnerOrMemberOfProfile(byte[],address)bool'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'isOwnerOrMemberOfProfile(byte[],address)bool'>]>
+  createProfile(args: MethodArgs<'createProfile(string,string)uint64'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): RegistryComposer<[...TReturns, MethodReturn<'createProfile(string,string)uint64'>]>
 
   /**
    * Makes a clear_state call to an existing instance of the Registry smart contract.

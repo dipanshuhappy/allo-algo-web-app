@@ -1,11 +1,11 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
+import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
+import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { AlloClient } from '../contracts/Allo'
-import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
@@ -23,6 +23,8 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     port: algodConfig.port,
     token: algodConfig.token,
   })
+  const { signer, activeAddress, signTransactions, sendTransactions } = useWallet()
+
   const indexerConfig = getIndexerConfigFromViteEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
     server: indexerConfig.server,
@@ -31,7 +33,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   })
 
   const { enqueueSnackbar } = useSnackbar()
-  const { signer, activeAddress } = useWallet()
+  // const { signer, activeAddress } = useWallet()
 
   const sendAppCall = async () => {
     setLoading(true)
@@ -58,6 +60,8 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       setLoading(false)
       return
     })
+
+    // appClient.compose().addTransaction()
 
     const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })

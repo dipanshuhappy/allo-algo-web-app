@@ -128,9 +128,9 @@ class BaseStrategy(ARC4Contract):
     def getPayOut(self, _recipientIds: Address, _data: Bytes) -> None:
         pass
 
-    @arc4.abimethod()
-    def GetPayout(self, _recipientIds: DynamicArray[Address], _data: DynamicArray[Bytes]) -> None:
-        recipientLength = _recipientIds.length
-        assert recipientLength == _data.length, "recipient and data length mismatch"
-        for i in range(recipientLength):
-            self.getPayOut(_recipientIds[i], _data[i])
+    # @arc4.abimethod()
+    # def GetPayout(self, _recipientIds: DynamicArray[Address], _data: DynamicArray[Bytes]) -> None:
+    #     recipientLength = _recipientIds.length
+    #     assert recipientLength == _data.length, "recipient and data length mismatch"
+    #     for i in range(recipientLength):
+    #         self.getPayOut(_recipientIds[i], _data[i])

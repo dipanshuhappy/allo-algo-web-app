@@ -1,0 +1,517 @@
+#pragma version 10
+
+smart_contracts.base_strategy.contract.BaseStrategy.approval_program:
+    intcblock 1 0
+    bytecblock "poolId" 0x151f7c75 "alloContractId" "poolAmount" "strategyId" "poolActive"
+    txn ApplicationID
+    bnz main_after_if_else@2
+    callsub __init__
+
+main_after_if_else@2:
+    callsub __puya_arc4_router__
+    return
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.__init__() -> void:
+__init__:
+    proto 0 0
+    bytec_2 // "alloContractId"
+    global ZeroAddress
+    app_global_put
+    bytec 4 // "strategyId"
+    pushbytes ""
+    app_global_put
+    bytec 5 // "poolActive"
+    intc_1 // 0
+    app_global_put
+    bytec_0 // "poolId"
+    intc_1 // 0
+    app_global_put
+    bytec_3 // "poolAmount"
+    intc_1 // 0
+    app_global_put
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.__puya_arc4_router__() -> uint64:
+__puya_arc4_router__:
+    proto 0 1
+    txn NumAppArgs
+    bz __puya_arc4_router___bare_routing@25
+    pushbytess 0x73e8cb16 0x08534d4e 0x6df65c82 0x66bf8410 0x06ecfaf7 0xbb01eab2 0x85c70fcb 0xb78d5e3b 0xbd7d0e80 0x7a5c210b 0x2ca276c6 0x4203ec19 0x3cad8fd7 0xc6d2fc13 0xde0d0b54 0x8cb09f7c 0xe08edf85 0x03ab7495 0xd3739bd6 0xfc5e7dcb 0x038f1790 // method "initializeVariables(address,string)void", method "getAlloContractId()address", method "getPoolId()uint64", method "getStrategyId()string", method "getPoolAmount()uint64", method "isPoolActive()bool", method "baseStrategy_init(uint64)void", method "increasePoolAmount(uint64)void", method "registerRecipient(byte[],account)void", method "beforeRegisterRecipient(byte[],account)void", method "afterRegisterRecipient(byte[],account)void", method "register_Recipient(byte[],account)void", method "allocate(byte[],account)void", method "beforeAllocate(byte[],account)void", method "afterAllocate(byte[],account)void", method "Allocate(byte[],account)void", method "distribute(address[],byte[],account)void", method "beforeDistribute(address[],byte[],account)void", method "afterDistribute(address[],byte[],account)void", method "Distribute(address[],byte[],account)void", method "getPayOut(address,byte[])void"
+    txna ApplicationArgs 0
+    match __puya_arc4_router___initializeVariables_route@2 __puya_arc4_router___getAlloContractId_route@3 __puya_arc4_router___getPoolId_route@4 __puya_arc4_router___getStrategyId_route@5 __puya_arc4_router___getPoolAmount_route@6 __puya_arc4_router___isPoolActive_route@7 __puya_arc4_router___baseStrategy_init_route@8 __puya_arc4_router___increasePoolAmount_route@9 __puya_arc4_router___registerRecipient_route@10 __puya_arc4_router___beforeRegisterRecipient_route@11 __puya_arc4_router___afterRegisterRecipient_route@12 __puya_arc4_router___register_Recipient_route@13 __puya_arc4_router___allocate_route@14 __puya_arc4_router___beforeAllocate_route@15 __puya_arc4_router___afterAllocate_route@16 __puya_arc4_router___Allocate_route@17 __puya_arc4_router___distribute_route@18 __puya_arc4_router___beforeDistribute_route@19 __puya_arc4_router___afterDistribute_route@20 __puya_arc4_router___Distribute_route@21 __puya_arc4_router___getPayOut_route@22
+    intc_1 // 0
+    retsub
+
+__puya_arc4_router___initializeVariables_route@2:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    extract 2 0
+    callsub initializeVariables
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___getAlloContractId_route@3:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    callsub getAlloContractId
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___getPoolId_route@4:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    callsub getPoolId
+    itob
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___getStrategyId_route@5:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    callsub getStrategyId
+    dup
+    len
+    itob
+    extract 6 2
+    swap
+    concat
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___getPoolAmount_route@6:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    callsub getPoolAmount
+    itob
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___isPoolActive_route@7:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    callsub isPoolActive
+    pushbytes 0x00
+    intc_1 // 0
+    uncover 2
+    setbit
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___baseStrategy_init_route@8:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    callsub baseStrategy_init
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___increasePoolAmount_route@9:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    btoi
+    callsub increasePoolAmount
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___registerRecipient_route@10:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___beforeRegisterRecipient_route@11:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___afterRegisterRecipient_route@12:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___register_Recipient_route@13:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    extract 2 0
+    txna ApplicationArgs 2
+    btoi
+    txnas Accounts
+    callsub register_Recipient
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___allocate_route@14:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___beforeAllocate_route@15:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___afterAllocate_route@16:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___Allocate_route@17:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    extract 2 0
+    txna ApplicationArgs 2
+    btoi
+    txnas Accounts
+    callsub Allocate
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___distribute_route@18:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    extract 2 0
+    txna ApplicationArgs 3
+    btoi
+    txnas Accounts
+    callsub distribute
+    pop
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___beforeDistribute_route@19:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    extract 2 0
+    txna ApplicationArgs 3
+    btoi
+    txnas Accounts
+    callsub beforeDistribute
+    pop
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___afterDistribute_route@20:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    extract 2 0
+    txna ApplicationArgs 3
+    btoi
+    txnas Accounts
+    callsub afterDistribute
+    pop
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___Distribute_route@21:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    extract 2 0
+    txna ApplicationArgs 3
+    btoi
+    txnas Accounts
+    callsub Distribute
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___getPayOut_route@22:
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___bare_routing@25:
+    txn OnCompletion
+    bnz __puya_arc4_router___after_if_else@29
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___after_if_else@29:
+    intc_1 // 0
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.initializeVariables(_alloContractId: bytes, _strategyId: bytes) -> void:
+initializeVariables:
+    proto 2 0
+    callsub __OnlyAllo
+    bytec_2 // "alloContractId"
+    frame_dig -2
+    app_global_put
+    bytec 4 // "strategyId"
+    frame_dig -1
+    app_global_put
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.__OnlyAllo() -> void:
+__OnlyAllo:
+    proto 0 0
+    intc_1 // 0
+    bytec_2 // "alloContractId"
+    app_global_get_ex
+    assert // check self.alloContractId exists
+    txn Sender
+    ==
+    assert // only allo contract can call this function
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.getAlloContractId() -> bytes:
+getAlloContractId:
+    proto 0 1
+    intc_1 // 0
+    bytec_2 // "alloContractId"
+    app_global_get_ex
+    assert // check self.alloContractId exists
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.getPoolId() -> uint64:
+getPoolId:
+    proto 0 1
+    intc_1 // 0
+    bytec_0 // "poolId"
+    app_global_get_ex
+    assert // check self.poolId exists
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.getStrategyId() -> bytes:
+getStrategyId:
+    proto 0 1
+    intc_1 // 0
+    bytec 4 // "strategyId"
+    app_global_get_ex
+    assert // check self.strategyId exists
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.getPoolAmount() -> uint64:
+getPoolAmount:
+    proto 0 1
+    intc_1 // 0
+    bytec_3 // "poolAmount"
+    app_global_get_ex
+    assert // check self.poolAmount exists
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.isPoolActive() -> uint64:
+isPoolActive:
+    proto 0 1
+    intc_1 // 0
+    bytec 5 // "poolActive"
+    app_global_get_ex
+    assert // check self.poolActive exists
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.baseStrategy_init(_poolId: uint64) -> void:
+baseStrategy_init:
+    proto 1 0
+    callsub __OnlyAllo
+    intc_1 // 0
+    bytec_0 // "poolId"
+    app_global_get_ex
+    assert // check self.poolId exists
+    !
+    assert // pool already initialized
+    frame_dig -1
+    assert // invalid pool id
+    bytec_0 // "poolId"
+    frame_dig -1
+    app_global_put
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.increasePoolAmount(_amount: uint64) -> void:
+increasePoolAmount:
+    proto 1 0
+    callsub __OnlyAllo
+    intc_1 // 0
+    bytec_3 // "poolAmount"
+    app_global_get_ex
+    assert // check self.poolAmount exists
+    frame_dig -1
+    +
+    bytec_3 // "poolAmount"
+    swap
+    app_global_put
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.register_Recipient(_data: bytes, _sender: bytes) -> void:
+register_Recipient:
+    proto 2 0
+    callsub __OnlyAllo
+    callsub __OnlyInitialized
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.__OnlyInitialized() -> void:
+__OnlyInitialized:
+    proto 0 0
+    intc_1 // 0
+    bytec_0 // "poolId"
+    app_global_get_ex
+    assert // check self.poolId exists
+    assert // pool is not initialized
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.Allocate(_data: bytes, _sender: bytes) -> void:
+Allocate:
+    proto 2 0
+    callsub __OnlyAllo
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.distribute(_recipientIds: bytes, _data: bytes, _sender: bytes) -> bytes:
+distribute:
+    proto 3 1
+    frame_dig -3
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.beforeDistribute(_recipientIds: bytes, _data: bytes, sender: bytes) -> bytes:
+beforeDistribute:
+    proto 3 1
+    frame_dig -3
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.afterDistribute(_recipientIds: bytes, _data: bytes, sender: bytes) -> bytes:
+afterDistribute:
+    proto 3 1
+    frame_dig -3
+    retsub
+
+
+// smart_contracts.base_strategy.contract.BaseStrategy.Distribute(_recipientIds: bytes, _data: bytes, _sender: bytes) -> void:
+Distribute:
+    proto 3 0
+    callsub __OnlyAllo
+    callsub __OnlyInitialized
+    frame_dig -3
+    frame_dig -2
+    frame_dig -1
+    callsub beforeDistribute
+    dup
+    frame_bury -3
+    frame_dig -2
+    frame_dig -1
+    callsub distribute
+    dup
+    frame_bury -3
+    frame_dig -2
+    frame_dig -1
+    callsub afterDistribute
+    frame_bury -3
+    retsub

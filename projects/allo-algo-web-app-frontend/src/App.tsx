@@ -4,7 +4,10 @@ import { PeraWalletConnect } from '@perawallet/connect'
 import { PROVIDER_ID, ProvidersArray, WalletProvider, useInitializeProviders } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
 import { SnackbarProvider } from 'notistack'
+import { Route, Switch } from 'wouter'
 import Home from './Home'
+import QuadraticFunding from './Quadratic-Funding'
+import Registry from './Registry'
 import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from './utils/network/getAlgoClientConfigs'
 
 let providersArray: ProvidersArray
@@ -50,7 +53,12 @@ export default function App() {
   return (
     <SnackbarProvider maxSnack={3}>
       <WalletProvider value={walletProviders}>
-        <Home />
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/qf" component={QuadraticFunding} />
+          <Route path="/registry" component={Registry} />
+        </Switch>
+        {/* <Home /> */}
       </WalletProvider>
     </SnackbarProvider>
   )
