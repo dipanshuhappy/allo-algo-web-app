@@ -87,7 +87,6 @@ export default function Registry() {
     try {
       enqueueSnackbar('Sending transaction...', { variant: 'info' })
       const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
-      enqueueSnackbar(`Transaction sent: 33AJZEH5HS6QTE4PKNY24TRVLCGHDA2B5VV2QIRA2IJTED47K5VA`, { variant: 'success' })
     } catch (e) {
       enqueueSnackbar('Failed to send transaction', { variant: 'error' })
     }

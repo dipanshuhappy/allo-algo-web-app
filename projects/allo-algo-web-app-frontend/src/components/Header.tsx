@@ -2,7 +2,6 @@ import { useWallet } from '@txnlab/use-wallet'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import ConnectWallet from './ConnectWallet'
-import { Button } from './ui/button'
 
 export default function Header() {
   const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
@@ -38,9 +37,9 @@ export default function Header() {
               </a>
             </li>
             <li>
-              <Button variant="link" data-test-id="connect-wallet" className="text-white" onClick={toggleWalletModal}>
+              <a data-test-id="connect-wallet" className="text-white" onClick={toggleWalletModal}>
                 Wallet Connection
-              </Button>
+              </a>
             </li>
             <li>
               <a href="#" className="hover:text-green-400 transition-colors">
