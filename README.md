@@ -24,4 +24,9 @@ This repository provides a starter full-stack project based on AlgoKit, allowing
 1. ***Contracts***
   within `/projects/allo-algo-web-app-contracts` , you have `base_strategy` which you can use to create your own allocation mechanism, and registry contract at `registry`
 2. ***Frontend***
- within `/projects/allo-algo-web-app-frontend`. It implements  
+ within `/projects/allo-algo-web-app-frontend`. It implements the quadratic funding mechanism.
+
+
+## Coming Soon 
+* Proper documentation and guide on how to connect
+* More strategies like direct funding etc.
