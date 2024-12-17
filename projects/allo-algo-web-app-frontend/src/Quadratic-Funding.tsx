@@ -11,9 +11,6 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import one from '../public/1.png'
-import two from '../public/2.jpeg'
-import three from '../public/3.png'
 import { getAlgodConfigFromViteEnvironment } from './utils/network/getAlgoClientConfigs'
 interface Project {
   id: number
@@ -23,34 +20,6 @@ interface Project {
   directDonations: number
   uniqueDonors: number
 }
-
-const projects: Project[] = [
-  {
-    id: 0,
-    title: 'Green Earth Initiative',
-    description: 'Promoting sustainable practices and environmental conservation.',
-    image: two,
-    directDonations: 1.3,
-    uniqueDonors: 2,
-  },
-  {
-    id: 1,
-    title: 'Tech Education for All',
-    description: 'Providing access to technology education in underserved communities.',
-    image: one,
-    directDonations: 1.5,
-    uniqueDonors: 1,
-  },
-  {
-    id: 2,
-    title: 'Health First',
-    description: 'Improving healthcare access and awareness in rural areas.',
-    image: three,
-    directDonations: 1.5,
-    uniqueDonors: 1,
-  },
-]
-
 const QF_ADDRESS = '7WHQK5Z435OQPH4LTAUMYFPW7M53WLGUSHQLYA5TUPDSHQF4UT4C7KIEKE'
 const APP_ID = 730129661
 export default function QuadraticFunding() {
